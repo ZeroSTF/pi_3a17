@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2023 at 04:20 PM
+-- Generation Time: Feb 16, 2023 at 11:06 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -162,7 +162,8 @@ CREATE TABLE `user` (
   `photo` mediumblob NOT NULL,
   `num_tel` int(11) NOT NULL,
   `ville` varchar(255) NOT NULL,
-  `valeur_fidelite` int(11) NOT NULL
+  `valeur_fidelite` int(11) NOT NULL,
+  `role` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -193,7 +194,8 @@ ALTER TABLE `evenement`
 -- Indexes for table `fidelite`
 --
 ALTER TABLE `fidelite`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_fidelite` (`id_user`);
 
 --
 -- Indexes for table `panier`
@@ -312,6 +314,12 @@ ALTER TABLE `user`
 ALTER TABLE `commentaire`
   ADD CONSTRAINT `post_com` FOREIGN KEY (`id_post`) REFERENCES `post` (`id`),
   ADD CONSTRAINT `user_com` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `fidelite`
+--
+ALTER TABLE `fidelite`
+  ADD CONSTRAINT `user_fidelite` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `panier`
