@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InscriptionController">
+   <children>
+      <VBox layoutX="79.0" layoutY="55.0" prefHeight="446.0" prefWidth="133.0" spacing="30.0">
+         <children>
+            <Label text="Email" />
+            <Label text="Mot de passe" />
+            <Label text="Nom" />
+            <Label text="Prenom" />
+            <Label prefHeight="21.0" prefWidth="120.0" text="Photo" />
+            <Label prefHeight="17.0" prefWidth="124.0" text="Numero de téléphone" />
+            <Label prefHeight="17.0" prefWidth="124.0" text="Ville" />
+         </children>
+      </VBox>
+      <VBox layoutX="226.0" layoutY="56.0" prefHeight="302.0" prefWidth="187.0" spacing="20.0">
+         <children>
+            <TextField fx:id="TF_email" />
+            <TextField fx:id="TF_mdp" />
+            <TextField fx:id="TF_nom" />
+            <TextField fx:id="TF_prenom" />
+            <TextField fx:id="Tf_experience" />
+            <TextField fx:id="TF_num" />
+            <ComboBox fx:id="villes_box" prefHeight="25.0" prefWidth="190.0" />
+         </children>
+      </VBox>
+      <Button fx:id="Button_inscrire" layoutX="261.0" layoutY="407.0" mnemonicParsing="false" onAction="#ON_inscrire_clicked" prefHeight="31.0" prefWidth="151.0" text="S'inscrire" />
+      <Button fx:id="button_annuler" layoutX="445.0" layoutY="407.0" mnemonicParsing="false" onAction="#on_annuler_clicked" prefHeight="31.0" prefWidth="151.0" text="Annuler" />
+   </children>
+</AnchorPane>
