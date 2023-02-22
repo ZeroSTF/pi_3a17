@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2023 at 11:06 PM
+-- Generation Time: Feb 22, 2023 at 02:19 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -60,6 +60,13 @@ CREATE TABLE `evenement` (
   `date_d` date NOT NULL,
   `date_f` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `evenement`
+--
+
+INSERT INTO `evenement` (`id`, `nom`, `description`, `date_d`, `date_f`) VALUES
+(1, 'eventname', 'eventdescription', '2023-02-20', '2023-02-28');
 
 -- --------------------------------------------------------
 
@@ -159,12 +166,24 @@ CREATE TABLE `user` (
   `pwd` varchar(255) NOT NULL,
   `nom` varchar(255) NOT NULL,
   `prenom` varchar(255) NOT NULL,
-  `photo` mediumblob NOT NULL,
+  `photo` varchar(255) NOT NULL,
   `num_tel` int(11) NOT NULL,
   `ville` varchar(255) NOT NULL,
   `valeur_fidelite` int(11) NOT NULL,
-  `role` tinyint(1) NOT NULL
+  `role` tinyint(1) NOT NULL,
+  `salt` varchar(255) NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `etat` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `pwd`, `nom`, `prenom`, `photo`, `num_tel`, `ville`, `valeur_fidelite`, `role`, `salt`, `token`, `etat`) VALUES
+(5, 'fjazpodjlkazj', 'BsIolDsyzVQ3thxJu7vg+nf/OuIA3/yDcs6DhwoBi0o=', 'efjlkafjazl', 'fealkfjalk', '', 51591222, 'Bizerte', 0, 0, 's&���', NULL, 'INACTIF'),
+(6, 'riadh.chnitir@esprit.tn', '7AlBN0/gG3xhLGdiFaF9yj2YYsnZm+XHWrIzyTbr+DE=', 'chnitir', 'riadh', '', 51591222, 'Bizerte', 0, 0, '����&��', NULL, 'INACTIF'),
+(7, 'hedi.kramti@esprit.tn', 'MP9MbiZRKcTcaSXyMuG9Xr6Q96yqNxbiWHFRgozE5jE=', 'kramti', 'hedi', '', 51591222, 'Beja', 0, 1, 'VP�����', NULL, 'INACTIF');
 
 --
 -- Indexes for dumped tables
@@ -260,7 +279,7 @@ ALTER TABLE `echange`
 -- AUTO_INCREMENT for table `evenement`
 --
 ALTER TABLE `evenement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `fidelite`
@@ -302,7 +321,7 @@ ALTER TABLE `transporteur`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

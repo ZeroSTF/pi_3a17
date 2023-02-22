@@ -169,6 +169,7 @@ public class TableUserController implements Initializable{
                 System.out.println(ex.getMessage());
             }
     }
+    
 
     @FXML
     void click_users(MouseEvent event) {      
@@ -196,6 +197,11 @@ role_user.setCellValueFactory(new PropertyValueFactory<>("role"));
 
 table_users.setItems(userList);
 
+    }
+    
+    @FXML
+    void click_ajout_user(MouseEvent event) {
+        
     }
     
     @Override

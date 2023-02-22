@@ -5,9 +5,13 @@
  */
 package tunitroc;
 
+import entities.Evenement;
 import entities.User;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Scanner;
+import services.CRUDEvenement;
 import services.CRUDUser;
 import utils.DBConnection;
 
@@ -19,6 +23,7 @@ public class Tunitroc {
 
     /**
      * @param args the command line arguments
+     * @throws java.sql.SQLException
      */
     public static void main(String[] args) throws SQLException {
         DBConnection TuniTrocDB = DBConnection.getInstance();
@@ -26,7 +31,9 @@ public class Tunitroc {
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
        System.out.println("Partie User");
-
+       LocalDate d1=null;
+       LocalDate d2=null;
+                    Evenement event= new Evenement(0,"nom","description",d1,d2);
                     User user = new User("jjdoe@example.com", "password", "Johnny", "Doe",  "https://example.com/profile.jpg",51591222, "Tunis", 0,false);
 
                     do {
@@ -46,11 +53,13 @@ public class Tunitroc {
                             continue;
                         }
                         CRUDUser crudUser = new CRUDUser();
+                        CRUDEvenement crudevent=new CRUDEvenement();
 
                         switch (choice) {
                             case 1:
                                 System.out.println("Ajout d'un utilisateur..");
-                                crudUser.ajouterUser(user);
+                                //crudUser.ajouterUser(user);
+                                crudevent.ajouterEvenement(event);
                                 break;
 
                             case 2:

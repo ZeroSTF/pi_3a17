@@ -96,7 +96,7 @@
                            </font>
                         </TextField>
                         <ComboBox prefHeight="210.0" prefWidth="257.0" style="-fx-border-color: #000000;" />
-                        <Button fx:id="btn_ajout_user" mnemonicParsing="false" prefHeight="33.0" prefWidth="262.0" style="-fx-background-color: #fcba03; -fx-border-color: #000000;" text="Ajouter un utilisateur" textFill="WHITE">
+                        <Button fx:id="btn_ajout_user" mnemonicParsing="false" onMouseClicked="#click_ajout_user" prefHeight="33.0" prefWidth="262.0" style="-fx-background-color: #fcba03; -fx-border-color: #000000;" text="Ajouter un utilisateur" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
