@@ -1,5 +1,8 @@
 package javafxapp;
 
+import com.mysql.cj.MysqlConnection;
+import connection.MyConnection;
+import java.awt.HeadlessException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,8 +24,27 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import java.io.InputStream;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import static jdk.nashorn.internal.runtime.Debug.id;
+import static org.omg.CORBA.AnySeqHelper.insert;
+import javafx.scene.input.MouseEvent;
+import javafxapp.Transporteur;
+
 
 public class FXMLController implements Initializable {
+   
     @FXML
     private TableColumn<Transporteur, Integer> IdColumn;
 
@@ -32,8 +54,8 @@ public class FXMLController implements Initializable {
     @FXML
     private TableColumn<Transporteur, String> PrenomColumn;
 
-    @FXML
-    private TableColumn<Transporteur, Integer> NumColumn;
+  @FXML
+    private TableColumn<Transporteur, Integer> Num_telColumn;
 
     @FXML
     private TableColumn<Transporteur, String> PhotoColumn;
@@ -46,6 +68,9 @@ public class FXMLController implements Initializable {
 
     @FXML
     private Button btnUpdate;
+    
+     @FXML
+     private Button btnImage;
 
     @FXML
     private TableView<Transporteur> table;
@@ -55,85 +80,132 @@ public class FXMLController implements Initializable {
 
     @FXML
     private TextField txtNom;
-
-    @FXML
-    private TextField txtNum;
+    
+@FXML
+    private TextField txtNum_tel;
 
     @FXML
     private TextField txtPrenom;
+    
+     @FXML
+    private TextField txtPhoto;
+     
+     @FXML
+private ImageView imageView;
+     
+      @FXML
+    private Button btnParcourir;
+   
+    
+    ObservableList<Transporteur> ListM;
+    int index =-1;
+    Connection con = null;
+    ResultSet rs=null;
+    PreparedStatement ps=null;
+   
 
-    private Connection con;
-    private PreparedStatement pst;
-    private int myIndex;
 
-    @FXML
+ @FXML
     void Add(ActionEvent event) {
-        int id, num_tel;
-        id = Integer.parseInt(txtId.getText());
-        num_tel = Integer.parseInt(txtNum.getText());
-        String nom, prenom, photo;
-        nom = txtNom.getText();
-        prenom = txtPrenom.getText();
-        photo = ""; // initialize photo
-
+        con=MyConnection.connectDb();
+        String sql="insert into transporteur(id,nom,prenom,num_tel,photo) values(?,?,?,?,?)";
         try {
-            pst = con.prepareStatement("insert into transporteur(id, nom, prenom, num_tel, photo) values (?, ?, ?, ?, ?)");
-            pst.setInt(1, id);
-            pst.setString(2, nom);
-            pst.setString(3, prenom);
-            pst.setInt(4, num_tel);
-            pst.setString(5, photo);
+        ps=con.prepareStatement(sql);
+        ps.setString(1,txtId.getText());
+        ps.setString(2,txtNom.getText());
+        ps.setString(3,txtPrenom.getText());
+       ps.setString(4,txtNum_tel.getText());
+        ps.setString(5,txtPhoto.getText());
 
-            pst.executeUpdate();
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Ajout du transporteur");
-            alert.setHeaderText("Ajout");
-            alert.setContentText("Transporter Added!");
-            alert.showAndWait();
-
-            // clear text fields
-            txtId.setText("");
-            txtNom.setText("");
-            txtPrenom.setText("");
-            txtNum.setText("");
-            txtId.requestFocus();
-            table(); // refresh table
-        } catch (SQLException ex) {
-            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
+ps.execute();
+JOptionPane.showMessageDialog(null, "Transporteur a été ajouté avec succés");
+        } catch(Exception e){
+        JOptionPane.showMessageDialog(null,e);
         }
+            UpdateTable();
+
     }
 
     @FXML
     void Delete(ActionEvent event) {
-        // TODO: implement delete functionality
-    }
+       con = MyConnection.connectDb();
+       String sql="Delete FROM  `transporteur` WHERE id= ?";
+       try{
+           
+       ps=  con.prepareStatement(sql);
+       ps.setString(1, txtId.getText());
+       ps.execute();
+       JOptionPane.showMessageDialog(null, "delete transport");
+                   UpdateTable();
+       }
+       catch   (HeadlessException | SQLException e) {
+           JOptionPane.showMessageDialog(null, e);
+        }
+
+       }
+ 
+
+       
 
     @FXML
     void Update(ActionEvent event) {
-        // TODO: implement update functionality
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        Connect();
-        table(); // populate table
-    }
-
-    private void Connect() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/tunitroc", "root", "");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+       
+        con=MyConnection.connectDb();
+      
+            
+String sql="update transporteur set id='"+txtId.getText()+"',nom='"+txtNom.getText()+"',prenom='"+txtPrenom.getText()+"',photo='"+txtPhoto.getText()+"'";
+            ps=con.prepareStatement(sql);
+            ps.execute();
+            JOptionPane.showMessageDialog(null,"transporteur a été modifié avec succés");        
+        } catch (Exception e) {
+                       JOptionPane.showMessageDialog(null, e);
 
-private void table() {
-    Connect();
-    ObservableList<Transporteur> transporteurList = FXCollections.observableArrayList();
+        }
+            UpdateTable();
+
+    }
+    
+    public void UpdateTable () {
+    IdColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, Integer>("id"));
+        NomColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, String>("nom"));
+    PrenomColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, String>("prenom"));
+     Num_telColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, Integer>("num_tel"));
+    PhotoColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, String>("photo"));
+ListM =MyConnection.getTransporteurs();
+table.setItems(ListM);    
+    }   
+    @FXML
+private void Parcourir(ActionEvent event) {
+    
 }
 
+@Override
+public void initialize(URL url, ResourceBundle rb) {
+    UpdateTable();
+} 
+@FXML
+private void refresh() {
+   
+    }
+
+@FXML
+public void getSelected(MouseEvent event){
+    index = table.getSelectionModel().getSelectedIndex();
+    if(index<=-1){
+    return;
+    }
+    try {
+    txtId.setText(IdColumn.getCellData(index).toString());
+    txtNom.setText(NomColumn.getCellData(index).toString());
+    txtPrenom.setText(PrenomColumn.getCellData(index).toString());
+   txtNum_tel.setText(Num_telColumn.getCellData(index).toString());
+    txtPhoto.setText(PhotoColumn.getCellData(index).toString()); }
+    catch (Exception e)
+            {   
+        JOptionPane.showMessageDialog(null, e);
+
+    }
+}
 }
