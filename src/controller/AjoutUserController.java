@@ -9,24 +9,20 @@ import entities.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import services.CRUDUser;
@@ -130,8 +126,73 @@ public class AjoutUserController implements Initializable {
     }    
 
     @FXML
-    private void click_ajout(MouseEvent event) {
+    private void click_ajout(MouseEvent event) throws SQLException {
+        CRUDUser sa = new CRUDUser();
+        // Get the values from the input fields
+String nom = txt_nom.getText();
+String prenom = txt_prenom.getText();
+String email = txt_email.getText();
+String password = txt_pwd.getText();
+String numTel = txt_numtel.getText();
+String ville = cbx_ville.getSelectionModel().getSelectedItem();
+String role = cbx_role.getSelectionModel().getSelectedItem();
+boolean r;
+if(role=="Admin"){
+    r=true;
+}
+else{
+    r=false;
+}
+
+// Validate the input values
+boolean inputValid = true;
+String errorMessage = "";
+
+// Check if email is in a valid format
+if (!email.matches("\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b")) {
+    inputValid = false;
+    errorMessage += "Le champ email doit être au format d'un email valide.\n";
+}
+
+// Check if numTel has 8 digits
+if (numTel.length() != 8 || !numTel.matches("\\d{8}")) {
+    inputValid = false;
+    errorMessage += "Le champ numéro de téléphone doit être composé de 8 chiffres.\n";
+}
+
+if (inputValid) {
+    int nTel=Integer.parseInt(numTel);
+    // Create a new user with the input values
+    User user = new User(email,password, nom, prenom, "", nTel, ville,0, r);
+    
+    // Call the method to add the user to the database
+    sa.ajouterUser(user);
+    
+        // Show a success message
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Ajout utilisateur");
+        alert.setHeaderText(null);
+        alert.setContentText("Utilisateur ajouté avec succès !");
+        alert.showAndWait();
         
+        // Clear the input fields
+        txt_nom.clear();
+        txt_prenom.clear();
+        txt_email.clear();
+        txt_pwd.clear();
+        txt_numtel.clear();
+        cbx_ville.getSelectionModel().clearSelection();
+        cbx_role.getSelectionModel().clearSelection();
+    
+} else {
+    // Show the error message
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle("Erreur de saisie");
+    alert.setHeaderText(null);
+    alert.setContentText(errorMessage);
+    alert.showAndWait();
+
+}
     }
 
     @FXML

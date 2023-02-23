@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -219,19 +220,23 @@ public class TableUserController implements Initializable{
         } catch (SQLException ex) {
             Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-ObservableList<User> userList = FXCollections.observableArrayList();
-userList.addAll(userListFromDatabase);
+        ObservableList<User> userList = FXCollections.observableArrayList();
+        userList.addAll(userListFromDatabase);
 
-id_user.setCellValueFactory(new PropertyValueFactory<>("id"));
-email_user.setCellValueFactory(new PropertyValueFactory<>("email"));
-pwd_user.setCellValueFactory(new PropertyValueFactory<>("pwd"));
-nom_user.setCellValueFactory(new PropertyValueFactory<>("nom"));
-prenom_user.setCellValueFactory(new PropertyValueFactory<>("prenom"));
-photo_user.setCellValueFactory(new PropertyValueFactory<>("photo"));
-num_user.setCellValueFactory(new PropertyValueFactory<>("num_tel"));
-ville_user.setCellValueFactory(new PropertyValueFactory<>("ville"));
-fidelite_user.setCellValueFactory(new PropertyValueFactory<>("valeur_fidelite"));
-role_user.setCellValueFactory(new PropertyValueFactory<>("role"));
+        id_user.setCellValueFactory(new PropertyValueFactory<>("id"));
+        email_user.setCellValueFactory(new PropertyValueFactory<>("email"));
+        pwd_user.setCellValueFactory(new PropertyValueFactory<>("pwd"));
+        nom_user.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        prenom_user.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+        photo_user.setCellValueFactory(new PropertyValueFactory<>("photo"));
+        num_user.setCellValueFactory(new PropertyValueFactory<>("num_tel"));
+        ville_user.setCellValueFactory(new PropertyValueFactory<>("ville"));
+        fidelite_user.setCellValueFactory(new PropertyValueFactory<>("valeur_fidelite"));
+        role_user.setCellValueFactory(cellData -> {
+                    Boolean isAdmin = cellData.getValue().isRole();
+                    String role = isAdmin ? "Admin" : "Client";
+                    return new ReadOnlyStringWrapper(role);
+                });
 
 table_users.setItems(userList);
 
@@ -270,26 +275,31 @@ table_users.setItems(userList);
     
     CRUDUser sa = new CRUDUser();
     
-    List<User> userListFromDatabase=null;
+        List<User> userListFromDatabase = null;
         try {
             userListFromDatabase = sa.afficherUsers();
         } catch (SQLException ex) {
             Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
         }
-ObservableList<User> userList = FXCollections.observableArrayList();
-userList.addAll(userListFromDatabase);
 
-id_user.setCellValueFactory(new PropertyValueFactory<>("id"));
-email_user.setCellValueFactory(new PropertyValueFactory<>("email"));
-pwd_user.setCellValueFactory(new PropertyValueFactory<>("pwd"));
-nom_user.setCellValueFactory(new PropertyValueFactory<>("nom"));
-prenom_user.setCellValueFactory(new PropertyValueFactory<>("prenom"));
-photo_user.setCellValueFactory(new PropertyValueFactory<>("photo"));
-num_user.setCellValueFactory(new PropertyValueFactory<>("num_tel"));
-ville_user.setCellValueFactory(new PropertyValueFactory<>("ville"));
-fidelite_user.setCellValueFactory(new PropertyValueFactory<>("valeur_fidelite"));
-role_user.setCellValueFactory(new PropertyValueFactory<>("role"));
+        ObservableList<User> userList = FXCollections.observableArrayList();
+        userList.addAll(userListFromDatabase);
 
-table_users.setItems(userList);
+        id_user.setCellValueFactory(new PropertyValueFactory<>("id"));
+        email_user.setCellValueFactory(new PropertyValueFactory<>("email"));
+        pwd_user.setCellValueFactory(new PropertyValueFactory<>("pwd"));
+        nom_user.setCellValueFactory(new PropertyValueFactory<>("nom"));
+        prenom_user.setCellValueFactory(new PropertyValueFactory<>("prenom"));
+        photo_user.setCellValueFactory(new PropertyValueFactory<>("photo"));
+        num_user.setCellValueFactory(new PropertyValueFactory<>("num_tel"));
+        ville_user.setCellValueFactory(new PropertyValueFactory<>("ville"));
+        fidelite_user.setCellValueFactory(new PropertyValueFactory<>("valeur_fidelite"));
+        role_user.setCellValueFactory(cellData -> {
+            Boolean isAdmin = cellData.getValue().isRole();
+            String role = isAdmin ? "Admin" : "Client";
+            return new ReadOnlyStringWrapper(role);
+        });
+
+        table_users.setItems(userList);
     }
 }
