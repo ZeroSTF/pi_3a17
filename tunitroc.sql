@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2023 at 02:19 PM
+-- Generation Time: Feb 23, 2023 at 03:49 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -32,7 +32,9 @@ CREATE TABLE `commentaire` (
   `contenu` varchar(255) NOT NULL,
   `date` datetime NOT NULL,
   `id_post` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL
+  `id_user` int(11) NOT NULL,
+  `likes` int(11) NOT NULL,
+  `dislikes` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -88,7 +90,6 @@ CREATE TABLE `fidelite` (
 
 CREATE TABLE `panier` (
   `id` int(11) NOT NULL,
-  `etat` varchar(255) NOT NULL,
   `date` date NOT NULL,
   `produit_s` int(11) NOT NULL,
   `produit_r` int(11) NOT NULL,
@@ -106,7 +107,9 @@ CREATE TABLE `post` (
   `titre` varchar(255) NOT NULL,
   `contenu` varchar(255) NOT NULL,
   `date` datetime NOT NULL,
-  `id_user` int(11) NOT NULL
+  `id_user` int(11) NOT NULL,
+  `likes` int(11) NOT NULL,
+  `dislikes` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -119,8 +122,9 @@ CREATE TABLE `produit` (
   `id` int(11) NOT NULL,
   `type` varchar(255) NOT NULL,
   `categorie` varchar(255) NOT NULL,
+  `nom` varchar(255) NOT NULL,
   `libelle` varchar(255) NOT NULL,
-  `photo` mediumblob NOT NULL,
+  `photo` varchar(500) NOT NULL,
   `ville` varchar(255) NOT NULL,
   `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -183,7 +187,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `email`, `pwd`, `nom`, `prenom`, `photo`, `num_tel`, `ville`, `valeur_fidelite`, `role`, `salt`, `token`, `etat`) VALUES
 (5, 'fjazpodjlkazj', 'BsIolDsyzVQ3thxJu7vg+nf/OuIA3/yDcs6DhwoBi0o=', 'efjlkafjazl', 'fealkfjalk', '', 51591222, 'Bizerte', 0, 0, 's&���', NULL, 'INACTIF'),
 (6, 'riadh.chnitir@esprit.tn', '7AlBN0/gG3xhLGdiFaF9yj2YYsnZm+XHWrIzyTbr+DE=', 'chnitir', 'riadh', '', 51591222, 'Bizerte', 0, 0, '����&��', NULL, 'INACTIF'),
-(7, 'hedi.kramti@esprit.tn', 'MP9MbiZRKcTcaSXyMuG9Xr6Q96yqNxbiWHFRgozE5jE=', 'kramti', 'hedi', '', 51591222, 'Beja', 0, 1, 'VP�����', NULL, 'INACTIF');
+(7, 'hedi.kramti@esprit.tn', 'MP9MbiZRKcTcaSXyMuG9Xr6Q96yqNxbiWHFRgozE5jE=', 'kramti', 'hedi', '', 51591222, 'Beja', 0, 1, 'VP�����', NULL, 'ACTIF'),
+(8, 'khayri@esprit.tn', '1k0AS+qnhtSr3AN2so9dkSivipWW8sDrRa45jzCBfpQ=', 'bouzazi', 'khayri', '', 51591222, 'Gafsa', 0, 1, '03�o|', NULL, 'ACTIF');
 
 --
 -- Indexes for dumped tables
@@ -321,7 +326,7 @@ ALTER TABLE `transporteur`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
