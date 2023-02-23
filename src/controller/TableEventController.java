@@ -71,6 +71,12 @@ public class TableEventController implements Initializable{
     @FXML
     private Button btn_events;
     
+     @FXML
+    private Button btn_ajout_event;
+
+    @FXML
+    private Button btn_modifier;
+    
     @FXML
     private Button btn_disconnect;
 
@@ -92,8 +98,6 @@ public class TableEventController implements Initializable{
     @FXML
     private TableColumn<Evenement, String> df_event;
 
-    @FXML
-    private Button btn_ajout_event;
 
     @FXML
     void mEnter(MouseEvent event) {
@@ -164,7 +168,59 @@ table_events.setItems(eventList);
                 System.out.println(ex.getMessage());
             }
     }
+    @FXML
+    void click_modif_event(MouseEvent event) {
+        ModifEventController modifeventcontroller = new ModifEventController();
+            modifeventcontroller.setUsername(username);
+            modifeventcontroller.setEmail(email);
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ModifEvent.fxml"));
+                
+                // set the controller instance
+                loader.setController(modifeventcontroller);
+                
+                Parent root = loader.load();
+                
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+                stage.show();
+                
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        
+    }
     
+    @FXML
+    void click_ajout_event(MouseEvent event) {
+         AjoutEventController ajouteventcontroller = new AjoutEventController();
+            ajouteventcontroller.setUsername(username);
+            ajouteventcontroller.setEmail(email);
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AjoutEvent.fxml"));
+                
+                // set the controller instance
+                loader.setController(ajouteventcontroller);
+                
+                Parent root = loader.load();
+                
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+                stage.show();
+                
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        
+    }
     
     @FXML
     void click_disconnect(MouseEvent event) throws SQLException {

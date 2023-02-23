@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import services.CRUDUser;
 
 public class TableUserController implements Initializable{
+    //CONSTANT STUFF TO COPY
     
     public String username;
     public String Photo;
@@ -58,44 +59,8 @@ public class TableUserController implements Initializable{
         
     @FXML
     private Button btn_disconnect;
-
-    @FXML
-    private TableView<User> table_users;
-
-    @FXML
-    private TableColumn<User, String> id_user;
-
-    @FXML
-    private TableColumn<User, String> email_user;
-
-    @FXML
-    private TableColumn<User, String> pwd_user;
-
-    @FXML
-    private TableColumn<User, String> nom_user;
-
-    @FXML
-    private TableColumn<User, String> prenom_user;
-
-    @FXML
-    private TableColumn<User, String> photo_user;
-
-    @FXML
-    private TableColumn<User, String> num_user;
-
-    @FXML
-    private TableColumn<User, String> ville_user;
-
-    @FXML
-    private TableColumn<User, String> fidelite_user;
-
-    @FXML
-    private TableColumn<User, String> role_user;
-
-    @FXML
-    private Button btn_ajout_user;
-
-    @FXML
+    
+     @FXML
     void click_disconnect(MouseEvent event) throws SQLException {
         CRUDUser sa = new CRUDUser();
         User u=sa.getUserByEmail(email);
@@ -143,6 +108,49 @@ public class TableUserController implements Initializable{
         btn_events.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
         }
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @FXML
+    private TableView<User> table_users;
+
+    @FXML
+    private TableColumn<User, String> id_user;
+
+    @FXML
+    private TableColumn<User, String> email_user;
+
+    @FXML
+    private TableColumn<User, String> pwd_user;
+
+    @FXML
+    private TableColumn<User, String> nom_user;
+
+    @FXML
+    private TableColumn<User, String> prenom_user;
+
+    @FXML
+    private TableColumn<User, String> photo_user;
+
+    @FXML
+    private TableColumn<User, String> num_user;
+
+    @FXML
+    private TableColumn<User, String> ville_user;
+
+    @FXML
+    private TableColumn<User, String> fidelite_user;
+
+    @FXML
+    private TableColumn<User, String> role_user;
+
+    @FXML
+    private Button btn_ajouter;
+    @FXML
+    private Button btn_modifier;
+    @FXML
+    private Button btn_supprimer;
+
+   
     
     @FXML
     void click_events(MouseEvent event) {
@@ -170,6 +178,36 @@ public class TableUserController implements Initializable{
             }
     }
     
+    @FXML
+    void click_supp_user(MouseEvent event) {
+        
+    }
+    @FXML
+    void click_modif_user(MouseEvent event) {
+        ModifUserController modifusercontroller = new ModifUserController();
+            modifusercontroller.setUsername(username);
+            modifusercontroller.setEmail(email);
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ModifUser.fxml"));
+                
+                // set the controller instance
+                loader.setController(modifusercontroller);
+                
+                Parent root = loader.load();
+                
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+                stage.show();
+                
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        
+    }
 
     @FXML
     void click_users(MouseEvent event) {      
@@ -201,6 +239,28 @@ table_users.setItems(userList);
     
     @FXML
     void click_ajout_user(MouseEvent event) {
+         AjoutUserController ajoutusercontroller = new AjoutUserController();
+            ajoutusercontroller.setUsername(username);
+            ajoutusercontroller.setEmail(email);
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AjoutUser.fxml"));
+                
+                // set the controller instance
+                loader.setController(ajoutusercontroller);
+                
+                Parent root = loader.load();
+                
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+                stage.show();
+                
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
         
     }
     

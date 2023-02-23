@@ -9,12 +9,8 @@ import entities.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,10 +19,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import services.CRUDUser;
@@ -36,9 +33,11 @@ import services.CRUDUser;
  *
  * @author ZeroS TF
  */
-public class AjoutUserController implements Initializable {
+public class ModifEventController implements Initializable {
+    //CONSTANT STUFF TO COPY
+    
     public String username;
-    public String photo;
+    public String Photo;
     public String email;
 
     public String getUsername() {
@@ -49,14 +48,6 @@ public class AjoutUserController implements Initializable {
         this.username = username;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -64,78 +55,21 @@ public class AjoutUserController implements Initializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
-
-    @FXML
-    private TextField txt_email;
-    @FXML
-    private PasswordField txt_pwd;
-    @FXML
-    private TextField txt_nom;
-    @FXML
-    private TextField txt_prenom;
-    @FXML
-    private TextField txt_numtel;
-    @FXML
-    private ComboBox<String> cbx_ville;
-    @FXML
-    private ComboBox<String> cbx_role;
-    @FXML
-    private Button btn_ajout;
-    @FXML
-    private Button btn_disconnect1;
+    
     @FXML
     private Label label_nomUser;
+
     @FXML
     private Button btn_users;
+
     @FXML
     private Button btn_events;
-
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        label_nomUser.setText(this.getUsername());
         
-        cbx_ville.setItems(FXCollections.observableArrayList(
-                "Ariana",
-                "Beja",
-                "Ben Arous",
-                "Bizerte",
-                "Gabes",
-                "Gafsa",
-                "Jendouba",
-                "Kairouan",
-                "Kasserine",
-                "Kebili",
-                "Kef",
-                "Mahdia",
-                "Manouba",
-                "Médenine",
-                "Monastir",
-                "Nabeul",
-                "Sfax",
-                "Sidi Bouzid",
-                "Siliana",
-                "Sousse",
-                "Tataouine",
-                "Tozeur",
-                "Tunis",
-                "Zaghouan"));
-        cbx_role.setItems(FXCollections.observableArrayList(
-                "Admin",
-                "Client"));
-    }    
-
     @FXML
-    private void click_ajout(MouseEvent event) {
-        
-    }
-
-    @FXML
-    private void click_disconnect(MouseEvent event) throws SQLException {
+    private Button btn_disconnect;
+    
+     @FXML
+    void click_disconnect(MouseEvent event) throws SQLException {
         CRUDUser sa = new CRUDUser();
         User u=sa.getUserByEmail(email);
         u.setEtat(User.EtatUser.INACTIF);
@@ -160,7 +94,7 @@ public class AjoutUserController implements Initializable {
                 System.out.println(ex.getMessage());
             }
     }
-
+    
     @FXML
     void mEnter(MouseEvent event) {
         Button btn = (Button) event.getSource();
@@ -182,6 +116,40 @@ public class AjoutUserController implements Initializable {
         btn_events.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
         }
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @FXML
+    private TextField txt_nom;
+
+    @FXML
+    private TextArea txt_description;
+
+    @FXML
+    private DatePicker pick_dd;
+
+    @FXML
+    private DatePicker pick_df;
+
+    @FXML
+    private Button btn_modif;
+   
+    
+
+    /**
+     * Initializes the controller class.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        label_nomUser.setText(this.getUsername());
+        
+        
+    }    
+
+    @FXML
+    private void click_modif(MouseEvent event) {
+    }
+
+
 
     @FXML
     void click_users(MouseEvent event) {
@@ -234,5 +202,6 @@ public class AjoutUserController implements Initializable {
                 System.out.println(ex.getMessage());
             }
     }
+    
     
 }

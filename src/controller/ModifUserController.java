@@ -9,12 +9,8 @@ import entities.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,7 +22,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import services.CRUDUser;
@@ -36,9 +31,11 @@ import services.CRUDUser;
  *
  * @author ZeroS TF
  */
-public class AjoutUserController implements Initializable {
+public class ModifUserController implements Initializable {
+    //CONSTANT STUFF TO COPY
+    
     public String username;
-    public String photo;
+    public String Photo;
     public String email;
 
     public String getUsername() {
@@ -49,14 +46,6 @@ public class AjoutUserController implements Initializable {
         this.username = username;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -64,8 +53,68 @@ public class AjoutUserController implements Initializable {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    @FXML
+    private Label label_nomUser;
 
+    @FXML
+    private Button btn_users;
 
+    @FXML
+    private Button btn_events;
+        
+    @FXML
+    private Button btn_disconnect;
+    
+     @FXML
+    void click_disconnect(MouseEvent event) throws SQLException {
+        CRUDUser sa = new CRUDUser();
+        User u=sa.getUserByEmail(email);
+        u.setEtat(User.EtatUser.INACTIF);
+        sa.modifierUser(u, email);
+        LoginUIController loginUIController = new LoginUIController();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUI.fxml"));
+                
+                // set the controller instance
+                loader.setController(loginUIController);
+                
+                Parent root = loader.load();
+                
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+                stage.show();
+                
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+    }
+    
+    @FXML
+    void mEnter(MouseEvent event) {
+        Button btn = (Button) event.getSource();
+        if (btn.equals(btn_users)) {
+        btn_users.setStyle("-fx-background-color: rgb(232, 171, 0); -fx-text-fill: white;");
+        }
+        else if (btn.equals(btn_events)) {
+        btn_events.setStyle("-fx-background-color: rgb(232, 171, 0); -fx-text-fill: white;");
+        }
+    }
+
+    @FXML
+    void mExit(MouseEvent event) {
+        Button btn = (Button) event.getSource();
+        if (btn.equals(btn_users)) {
+        btn_users.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
+        }
+        else if (btn.equals(btn_events)) {
+        btn_events.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
+        }
+    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @FXML
     private TextField txt_email;
@@ -82,15 +131,8 @@ public class AjoutUserController implements Initializable {
     @FXML
     private ComboBox<String> cbx_role;
     @FXML
-    private Button btn_ajout;
-    @FXML
-    private Button btn_disconnect1;
-    @FXML
-    private Label label_nomUser;
-    @FXML
-    private Button btn_users;
-    @FXML
-    private Button btn_events;
+    private Button btn_modif;
+    
 
     /**
      * Initializes the controller class.
@@ -130,58 +172,10 @@ public class AjoutUserController implements Initializable {
     }    
 
     @FXML
-    private void click_ajout(MouseEvent event) {
-        
+    private void click_modif(MouseEvent event) {
     }
 
-    @FXML
-    private void click_disconnect(MouseEvent event) throws SQLException {
-        CRUDUser sa = new CRUDUser();
-        User u=sa.getUserByEmail(email);
-        u.setEtat(User.EtatUser.INACTIF);
-        sa.modifierUser(u, email);
-        LoginUIController loginUIController = new LoginUIController();
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUI.fxml"));
-                
-                // set the controller instance
-                loader.setController(loginUIController);
-                
-                Parent root = loader.load();
-                
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                
-                Scene scene = new Scene(root);
 
-                stage.setScene(scene);
-                stage.show();
-                
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
-    }
-
-    @FXML
-    void mEnter(MouseEvent event) {
-        Button btn = (Button) event.getSource();
-        if (btn.equals(btn_users)) {
-        btn_users.setStyle("-fx-background-color: rgb(232, 171, 0); -fx-text-fill: white;");
-        }
-        else if (btn.equals(btn_events)) {
-        btn_events.setStyle("-fx-background-color: rgb(232, 171, 0); -fx-text-fill: white;");
-        }
-    }
-
-    @FXML
-    void mExit(MouseEvent event) {
-        Button btn = (Button) event.getSource();
-        if (btn.equals(btn_users)) {
-        btn_users.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
-        }
-        else if (btn.equals(btn_events)) {
-        btn_events.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
-        }
-    }
 
     @FXML
     void click_users(MouseEvent event) {
@@ -234,5 +228,6 @@ public class AjoutUserController implements Initializable {
                 System.out.println(ex.getMessage());
             }
     }
+    
     
 }

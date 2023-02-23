@@ -155,7 +155,7 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="btn_ajout_user" mnemonicParsing="false" onMouseClicked="#click_ajout_user" prefHeight="33.0" prefWidth="196.0" style="-fx-background-color: #fcd745; -fx-border-color: #ffff; -fx-background-radius: 20;" text="Ajouter " textFill="WHITE">
+                        <Button fx:id="btn_ajouter" mnemonicParsing="false" onMouseClicked="#click_ajout_user" prefHeight="33.0" prefWidth="196.0" style="-fx-background-color: #fcd745; -fx-border-color: #ffff; -fx-background-radius: 20;" text="Ajouter " textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -166,7 +166,7 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
-                        <Button fx:id="btn_ajout_user1" mnemonicParsing="false" onMouseClicked="#click_ajout_user" prefHeight="33.0" prefWidth="209.0" style="-fx-background-color: #fcd745; -fx-border-color: #ffff;" text="Supprimer" textFill="WHITE">
+                        <Button fx:id="btn_supprimer" mnemonicParsing="false" onMouseClicked="#click_supp_user" prefHeight="33.0" prefWidth="209.0" style="-fx-background-color: #fcd745; -fx-border-color: #ffff;" text="Supprimer" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -174,7 +174,7 @@
                               <FontAwesomeIconView fill="WHITE" glyphName="MINUS" size="20" />
                            </graphic>
                         </Button>
-                        <Button fx:id="btn_ajout_user2" mnemonicParsing="false" onMouseClicked="#click_ajout_user" prefHeight="33.0" prefWidth="196.0" style="-fx-background-color: #fcd745; -fx-border-color: #FFFF;" text="Modifier " textFill="WHITE">
+                        <Button fx:id="btn_modifier" mnemonicParsing="false" onMouseClicked="#click_modif_user" prefHeight="33.0" prefWidth="196.0" style="-fx-background-color: #fcd745; -fx-border-color: #FFFF;" text="Modifier " textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
