@@ -110,10 +110,10 @@ public class TableEventController implements Initializable{
     void mExit(MouseEvent event) {
         Button btn = (Button) event.getSource();
         if (btn.equals(btn_users)) {
-        btn_users.setStyle("-fx-background-color: rgb(232, 171, 0); -fx-text-fill: white;");
+        btn_users.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
         }
         else if (btn.equals(btn_events)) {
-        btn_events.setStyle("-fx-background-color: rgb(232, 171, 0); -fx-text-fill: white;");
+        btn_events.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
         }
     }
     
