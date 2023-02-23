@@ -23,7 +23,7 @@ public class JavaFXApp extends Application {
     }
 
     public static void main(String[] args) {
-        MyConnection mc = new MyConnection();
+        MyConnection con = new MyConnection();
         launch(args);
     }
 }

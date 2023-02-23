@@ -1,93 +1,66 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package javafxapp;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
 
 public class Transporteur {
 
-    private final IntegerProperty id;
-    private final StringProperty nom;
-    private final StringProperty prenom;
-    private final IntegerProperty num_tel;
-    private final StringProperty photo;
-    
-    public Transporteur() {
-        id = new SimpleIntegerProperty(this, "id");
-        nom = new SimpleStringProperty(this, "nom");
-        prenom = new SimpleStringProperty(this, "prenom");
-        num_tel = new SimpleIntegerProperty(this, "num_tel");
-        photo = new SimpleStringProperty(this, "photo");        
-    }
+    private Integer id;
+    private String nom;
+    private String prenom;
+    private Integer num_tel;
+    private String  photo;
 
-    public IntegerProperty idProperty() {
+    public Transporteur(Integer id, String nom, String prenom, Integer num_tel, String photo) {
+    this.id =  id;
+    this.nom = nom;
+    this.prenom = prenom;
+    this.num_tel = num_tel;
+    this.photo = photo;
+}
+
+    public int getId() {
         return id;
     }
 
-    public int getId() {
-        return id.get();
+    public void setId(Integer id) {
+        this.id = id;
     }
-
-    public void setId(int newId) {
-        id.set(newId);
-    }
-
-    public StringProperty nomProperty() {
+    
+public String getNom() {
         return nom;
     }
 
-    public String getNom() {
-        return nom.get();
+    public void setNom(String nom) {
+        this.nom = nom;
     }
-
-    public void setNom(String newNom) {
-        nom.set(newNom);
-    }
-
-    public StringProperty prenomProperty() {
+    
+    public String getPrenom() {
         return prenom;
     }
 
-    public String getPrenom() {
-        return prenom.get();
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
-
-    public void setPrenom(String newPrenom) {
-        prenom.set(newPrenom);
-    }
-
-    public StringProperty photoProperty() {
-        return photo;
-    }
-
-    public String getPhoto() {
-        return photo.get();
-    }
-
-    public void setPhoto(String newPhoto) {
-        photo.set(newPhoto);
-    }
-
-    public IntegerProperty num_telProperty() {
+     public int getNum() {
         return num_tel;
     }
 
-    public int getNum_tel() {
-        return num_tel.get();
+    public void setNum(Integer num_tel) {
+        this.num_tel = num_tel;
+    }
+    
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setNum_tel(int newNum_tel) {
-        num_tel.set(newNum_tel);
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
-        
-    @Override
-    public String toString() {
-        return String.format("%s[id=%d, nom=%s, prenom=%s, num_tel=%d, photo=%s]", 
-            getClass().getSimpleName(), getId(), getNom(), getPrenom(), getNum_tel(), getPhoto());
-    }
+    
 }
