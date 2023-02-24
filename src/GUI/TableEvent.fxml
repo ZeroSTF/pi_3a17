@@ -28,7 +28,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="111.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="img_user" fitHeight="100.0" fitWidth="100.0" layoutX="111.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../Desktop/data/Bureau/rc/Edgein.jpg" />
                </image>
@@ -164,7 +164,7 @@
                               <Insets />
                            </opaqueInsets>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="209.0" style="-fx-background-color: #fcd745; -fx-border-color: #ffff;" text="Supprimer" textFill="WHITE">
+                        <Button fx:id="btn_supprimer" mnemonicParsing="false" onMouseClicked="#click_supp_event" prefHeight="33.0" prefWidth="209.0" style="-fx-background-color: #fcd745; -fx-border-color: #ffff;" text="Supprimer" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -192,7 +192,7 @@
             </GridPane>
          </children>
       </VBox>
-      <Pane layoutX="318.0" layoutY="14.0" prefHeight="158.0" prefWidth="936.0" style="-fx-background-color: #fcd74 #2332445;">
+      <Pane layoutX="318.0" layoutY="14.0" prefHeight="158.0" prefWidth="936.0" style="-fx-background-color: #fcd74;">
          <children>
             <Label layoutX="29.0" layoutY="34.0" prefHeight="90.0" prefWidth="438.0" text="Gestion des Evenements" textFill="WHITE">
                <font>

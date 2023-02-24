@@ -44,7 +44,7 @@ public class CRUDUser implements InterfaceCRUDUser{
         stmt.setString(2, hashPassword(user.getPwd(), salt));
         stmt.setString(3, user.getNom());
         stmt.setString(4, user.getPrenom());
-        stmt.setString(5, user.getPhoto());
+        stmt.setBytes(5, user.getPhoto());
         stmt.setInt(6, user.getNum_tel());
         stmt.setString(7, user.getVille());
         stmt.setInt(8, user.getValeur_fidelite());
@@ -62,7 +62,7 @@ public class CRUDUser implements InterfaceCRUDUser{
         stmt.setString(2, user.getPwd());
         stmt.setString(3, user.getNom());
         stmt.setString(4, user.getPrenom());
-        stmt.setString(5, user.getPhoto());
+        stmt.setBytes(5, user.getPhoto());
         stmt.setInt(6,user.getNum_tel());
         stmt.setString(7, user.getVille());
         stmt.setInt(8, user.getValeur_fidelite());
@@ -142,7 +142,7 @@ public class CRUDUser implements InterfaceCRUDUser{
         user.setPwd(rs.getString("pwd"));
         user.setNom(rs.getString("nom"));
         user.setPrenom(rs.getString("prenom"));
-        user.setPhoto(rs.getString("photo"));
+        user.setPhoto(rs.getBytes("photo"));
         user.setNum_tel(rs.getInt("num_tel"));
         user.setVille(rs.getString("ville"));
         user.setValeur_fidelite(rs.getInt("valeur_fidelite"));

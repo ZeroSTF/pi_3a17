@@ -76,6 +76,7 @@ private void ON_seconnecter_clicked(ActionEvent event) throws SQLException {
             TableUserController tableUserController = new TableUserController();
             tableUserController.setUsername(user.getPrenom() + " " + user.getNom());
             tableUserController.setEmail(email);
+            tableUserController.setPhoto(user.getPhoto());
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));

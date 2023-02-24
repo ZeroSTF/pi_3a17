@@ -21,4 +21,6 @@ public interface InterfaceCRUDEvenement {
     public void supprimerEvenement(int id) throws SQLException;
 
     public List<Evenement> afficherEvenements() throws SQLException;
+    
+    public boolean existeEvenement(String nom) throws SQLException;
 }

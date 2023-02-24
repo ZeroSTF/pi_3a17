@@ -6,7 +6,9 @@
 package controller;
 
 import entities.User;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -22,6 +24,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import services.CRUDUser;
@@ -35,7 +39,7 @@ public class ModifUserController implements Initializable {
     //CONSTANT STUFF TO COPY
     
     public String username;
-    public String Photo;
+    public byte[] photo;
     public String email;
 
     public String getUsername() {
@@ -53,6 +57,14 @@ public class ModifUserController implements Initializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
     
     @FXML
     private Label label_nomUser;
@@ -65,6 +77,9 @@ public class ModifUserController implements Initializable {
         
     @FXML
     private Button btn_disconnect;
+    
+    @FXML
+    private ImageView img_user;
     
      @FXML
     void click_disconnect(MouseEvent event) throws SQLException {
@@ -140,6 +155,10 @@ public class ModifUserController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         label_nomUser.setText(this.getUsername());
+        InputStream inputStream = new ByteArrayInputStream(photo);
+        Image image = new Image(inputStream);
+        img_user.setImage(image);
+        img_user.setPreserveRatio(true);
         
         cbx_ville.setItems(FXCollections.observableArrayList(
                 "Ariana",
@@ -182,6 +201,7 @@ public class ModifUserController implements Initializable {
         TableUserController tableUserController = new TableUserController();
         tableUserController.setUsername(username);
         tableUserController.setEmail(email);
+        tableUserController.setPhoto(photo);
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
@@ -208,6 +228,7 @@ public class ModifUserController implements Initializable {
         TableEventController tableEventController = new TableEventController();
             tableEventController.setUsername(username);
             tableEventController.setEmail(email);
+            tableEventController.setPhoto(photo);
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));

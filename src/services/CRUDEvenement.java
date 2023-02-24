@@ -25,16 +25,6 @@ public class CRUDEvenement implements InterfaceCRUDEvenement{
     Connection TuniTrocDB = DBConnection.getConnection();
     @Override
     public void ajouterEvenement(Evenement evenement) throws SQLException {
-        // Check if event name already exists
-        String sql = "SELECT COUNT(*) FROM evenement WHERE nom = ?";
-        try ( PreparedStatement pstmt = TuniTrocDB.prepareStatement(sql)) {
-            pstmt.setString(1, evenement.getNom());
-            try ( ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next() && rs.getInt(1) > 0) {
-                    throw new SQLException("Il y a déja un événement avec ce nom.");
-                }
-            }
-        }
         
         PreparedStatement stmt = TuniTrocDB.prepareStatement("INSERT INTO evenement(nom,description, date_d, date_f) VALUES(?, ?, ?, ?)");
         stmt.setString(1, evenement.getNom());
@@ -79,5 +69,16 @@ public class CRUDEvenement implements InterfaceCRUDEvenement{
         System.out.println(evenements);
         return evenements;
     }
+
+    @Override
+    public boolean existeEvenement(String nom) throws SQLException {
+    Connection conn = DBConnection.getConnection();
+    PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM evenement WHERE nom = ?");
+    ps.setString(1, nom);
+    ResultSet rs = ps.executeQuery();
+    rs.next();
+    int count = rs.getInt(1);
+    return count > 0;
+}
     
 }

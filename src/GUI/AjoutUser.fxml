@@ -74,7 +74,7 @@
             <PasswordField fx:id="txt_pwd" prefHeight="35.0" />
             <TextField fx:id="txt_nom" prefHeight="35.0" />
             <TextField fx:id="txt_prenom" prefHeight="35.0" />
-            <TextField prefHeight="35.0" />
+            <Button fx:id="btn_upload" mnemonicParsing="false" onAction="#click_upload" prefHeight="35.0" prefWidth="372.0" text="Choisir un fichier..." />
             <TextField fx:id="txt_numtel" minHeight="35.0" />
             <ComboBox fx:id="cbx_ville" prefHeight="35.0" prefWidth="358.0" />
             <ComboBox fx:id="cbx_role" prefHeight="35.0" prefWidth="382.0" />
@@ -92,7 +92,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="111.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="img_user" fitHeight="100.0" fitWidth="100.0" layoutX="111.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../Desktop/data/Bureau/rc/Edgein.jpg" />
                </image>
