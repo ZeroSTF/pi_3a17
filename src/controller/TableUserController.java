@@ -36,8 +36,10 @@ import javafx.stage.Stage;
 import services.CRUDUser;
 
 public class TableUserController implements Initializable {
+
     //CONSTANT STUFF TO COPY
     public User currentUser;
+
     public User getCurrentUser() {
         return currentUser;
     }
@@ -280,13 +282,17 @@ public class TableUserController implements Initializable {
                     if (empty || item == null) {
                         setGraphic(null);
                     } else {
+                        // Load the image and resize it
                         Image image = new Image(new ByteArrayInputStream(item));
                         imageView.setImage(image);
+                        imageView.setFitWidth(50); // set the width of the ImageView
+                        imageView.setFitHeight(50); // set the height of the ImageView
                         setGraphic(imageView);
                     }
                 }
             };
         });
+
         num_user.setCellValueFactory(new PropertyValueFactory<>("num_tel"));
         ville_user.setCellValueFactory(new PropertyValueFactory<>("ville"));
         fidelite_user.setCellValueFactory(new PropertyValueFactory<>("valeur_fidelite"));
@@ -362,13 +368,17 @@ public class TableUserController implements Initializable {
                     if (empty || item == null) {
                         setGraphic(null);
                     } else {
+                        // Load the image and resize it
                         Image image = new Image(new ByteArrayInputStream(item));
                         imageView.setImage(image);
+                        imageView.setFitWidth(50); // set the width of the ImageView
+                        imageView.setFitHeight(50); // set the height of the ImageView
                         setGraphic(imageView);
                     }
                 }
             };
         });
+
         num_user.setCellValueFactory(new PropertyValueFactory<>("num_tel"));
         ville_user.setCellValueFactory(new PropertyValueFactory<>("ville"));
         fidelite_user.setCellValueFactory(new PropertyValueFactory<>("valeur_fidelite"));
