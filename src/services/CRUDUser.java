@@ -32,17 +32,6 @@ public class CRUDUser implements InterfaceCRUDUser{
     
     @Override
     public void ajouterUser(User user) throws SQLException {
-        
-         // Check if the email is already in use
-        String sql = "SELECT COUNT(*) FROM user WHERE email = ?";
-        try ( PreparedStatement pstmt = TuniTrocDB.prepareStatement(sql)) {
-            pstmt.setString(1, user.getEmail());
-            try ( ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next() && rs.getInt(1) > 0) {
-                    throw new SQLException("Email address already in use.");
-                }
-            }
-        }
 
         // generating a random string (salt)
         byte[] chars = new byte[7];
@@ -184,7 +173,7 @@ public class CRUDUser implements InterfaceCRUDUser{
 
     @Override
     public boolean emailExists(String email) throws SQLException {
-    String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+    String sql = "SELECT COUNT(*) FROM user WHERE email = ?";
     try (PreparedStatement stmt = TuniTrocDB.prepareStatement(sql)) {
         stmt.setString(1, email);
         ResultSet rs = stmt.executeQuery();
