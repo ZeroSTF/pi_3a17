@@ -238,7 +238,7 @@ public class TableUserController implements Initializable{
                     return new ReadOnlyStringWrapper(role);
                 });
 
-table_users.setItems(userList);
+        table_users.setItems(userList);
 
     }
     

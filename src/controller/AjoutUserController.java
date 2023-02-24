@@ -120,53 +120,73 @@ public class AjoutUserController implements Initializable {
                 "Tozeur",
                 "Tunis",
                 "Zaghouan"));
+        
         cbx_role.setItems(FXCollections.observableArrayList(
                 "Admin",
                 "Client"));
     }    
 
-    @FXML
-    private void click_ajout(MouseEvent event) throws SQLException {
-        CRUDUser sa = new CRUDUser();
-        // Get the values from the input fields
-String nom = txt_nom.getText();
-String prenom = txt_prenom.getText();
-String email = txt_email.getText();
-String password = txt_pwd.getText();
-String numTel = txt_numtel.getText();
-String ville = cbx_ville.getSelectionModel().getSelectedItem();
-String role = cbx_role.getSelectionModel().getSelectedItem();
-boolean r;
-if(role=="Admin"){
-    r=true;
-}
-else{
-    r=false;
-}
-
-// Validate the input values
-boolean inputValid = true;
-String errorMessage = "";
-
-// Check if email is in a valid format
-if (!email.matches("\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b")) {
-    inputValid = false;
-    errorMessage += "Le champ email doit être au format d'un email valide.\n";
-}
-
-// Check if numTel has 8 digits
-if (numTel.length() != 8 || !numTel.matches("\\d{8}")) {
-    inputValid = false;
-    errorMessage += "Le champ numéro de téléphone doit être composé de 8 chiffres.\n";
-}
-
-if (inputValid) {
-    int nTel=Integer.parseInt(numTel);
-    // Create a new user with the input values
-    User user = new User(email,password, nom, prenom, "", nTel, ville,0, r);
+   @FXML
+private void click_ajout(MouseEvent event) throws SQLException {
+    CRUDUser sa = new CRUDUser();
     
-    // Call the method to add the user to the database
-    sa.ajouterUser(user);
+    // Get the values from the input fields
+    String nom = txt_nom.getText();
+    String prenom = txt_prenom.getText();
+    String email = txt_email.getText();
+    String password = txt_pwd.getText();
+    String numTel = txt_numtel.getText();
+    String ville = cbx_ville.getSelectionModel().getSelectedItem();
+    String role = cbx_role.getSelectionModel().getSelectedItem();
+    boolean r;
+    if(role=="Admin"){
+        r=true;
+    }
+    else{
+        r=false;
+    }
+
+    // Validate the input values
+    boolean inputValid = true;
+    String errorMessage = "";
+
+    // Check if email is in a valid format
+    if (!email.matches("\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b")) {
+        inputValid = false;
+        errorMessage += "Le champ email doit être au format d'un email valide.\n";
+    }
+    
+    // Check if email is already in use
+    if (sa.emailExists(email)) {
+        inputValid = false;
+        errorMessage += "Cet email est déjà utilisé par un autre utilisateur.\n";
+    }
+
+    // Check if numTel has 8 digits
+    if (numTel.length() != 8 || !numTel.matches("\\d{8}")) {
+        inputValid = false;
+        errorMessage += "Le champ numéro de téléphone doit être composé de 8 chiffres.\n";
+    }
+    
+    // Check if password has at least 6 characters
+    if (password.length() < 6) {
+        inputValid = false;
+        errorMessage += "Le champ mot de passe doit contenir au moins 6 caractères.\n";
+    }
+
+    // Check if any field is empty
+    if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || password.isEmpty() || numTel.isEmpty() || ville == null || role == null) {
+        inputValid = false;
+        errorMessage += "Tous les champs doivent être remplis.\n";
+    }
+
+    if (inputValid) {
+        int nTel=Integer.parseInt(numTel);
+        // Create a new user with the input values
+        User user = new User(email,password, nom, prenom, "", nTel, ville,0, r);
+    
+        // Call the method to add the user to the database
+        sa.ajouterUser(user);
     
         // Show a success message
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -184,16 +204,16 @@ if (inputValid) {
         cbx_ville.getSelectionModel().clearSelection();
         cbx_role.getSelectionModel().clearSelection();
     
-} else {
-    // Show the error message
-    Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle("Erreur de saisie");
-    alert.setHeaderText(null);
-    alert.setContentText(errorMessage);
-    alert.showAndWait();
-
-}
+    } else {
+        // Show the error message
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur de saisie");
+        alert.setHeaderText(null);
+        alert.setContentText(errorMessage);
+        alert.showAndWait();
     }
+}
+
 
     @FXML
     private void click_disconnect(MouseEvent event) throws SQLException {

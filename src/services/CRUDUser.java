@@ -181,4 +181,18 @@ public class CRUDUser implements InterfaceCRUDUser{
         // Generate a secure random token (simple UUID)
         return UUID.randomUUID().toString();
     }
+
+    @Override
+    public boolean emailExists(String email) throws SQLException {
+    String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
+    try (PreparedStatement stmt = TuniTrocDB.prepareStatement(sql)) {
+        stmt.setString(1, email);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            int count = rs.getInt(1);
+            return count > 0;
+        }
+        return false;
+    }
+}
 }

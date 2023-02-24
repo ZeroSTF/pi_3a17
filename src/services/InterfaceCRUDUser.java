@@ -13,5 +13,7 @@ public interface InterfaceCRUDUser {
     public void supprimerUser(String email) throws SQLException;
 
     public List<User> afficherUsers() throws SQLException;
+    
+    public boolean emailExists(String email) throws SQLException;
 
 }
