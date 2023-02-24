@@ -42,34 +42,16 @@ import services.CRUDUser;
  */
 public class AjoutUserController implements Initializable {
 
-    public String username;
-    public byte[] photo;
-    public String email;
     public byte[] uploadedImage = null;
-
-    public String getUsername() {
-        return username;
+    public User currentUser;
+    public User getCurrentUser() {
+        return currentUser;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     @FXML
     private TextField txt_email;
@@ -105,8 +87,8 @@ public class AjoutUserController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        label_nomUser.setText(this.getUsername());
-        InputStream inputStream = new ByteArrayInputStream(photo);
+        label_nomUser.setText(currentUser.getPrenom() + " " + currentUser.getNom());
+        InputStream inputStream = new ByteArrayInputStream(currentUser.getPhoto());
         Image image = new Image(inputStream);
         img_user.setImage(image);
         img_user.setPreserveRatio(true);
@@ -213,9 +195,8 @@ public class AjoutUserController implements Initializable {
         }
 
         if (inputValid) {
-            int nTel = Integer.parseInt(numTel);
             // Create a new user with the input values
-            User user = new User(email, password, nom, prenom, uploadedImage, nTel, ville, 0, r);
+            User user = new User(email, password, nom, prenom, uploadedImage, numTel, ville, 0, r);
 
             // Call the method to add the user to the database
             sa.ajouterUser(user);
@@ -249,9 +230,9 @@ public class AjoutUserController implements Initializable {
     @FXML
     private void click_disconnect(MouseEvent event) throws SQLException {
         CRUDUser sa = new CRUDUser();
-        User u = sa.getUserByEmail(email);
+        User u = sa.getUserByEmail(currentUser.getEmail());
         u.setEtat(User.EtatUser.INACTIF);
-        sa.modifierUser(u, email);
+        sa.modifierUser(u, currentUser.getEmail());
         LoginUIController loginUIController = new LoginUIController();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUI.fxml"));
@@ -296,9 +277,7 @@ public class AjoutUserController implements Initializable {
     @FXML
     void click_users(MouseEvent event) {
         TableUserController tableUserController = new TableUserController();
-        tableUserController.setUsername(username);
-        tableUserController.setEmail(email);
-        tableUserController.setPhoto(photo);
+        tableUserController.setCurrentUser(currentUser);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
@@ -323,9 +302,7 @@ public class AjoutUserController implements Initializable {
     @FXML
     private void click_events(MouseEvent event) {
         TableEventController tableEventController = new TableEventController();
-        tableEventController.setUsername(username);
-        tableEventController.setEmail(email);
-        tableEventController.setPhoto(photo);
+        tableEventController.setCurrentUser(currentUser);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));

@@ -16,7 +16,7 @@ public class User {
     private String nom;
     private String prenom;
     private byte[] photo;
-    private int num_tel;
+    private String num_tel;
     private String ville;
     private int valeur_fidelite;
     private boolean role;
@@ -27,7 +27,7 @@ public class User {
     public User() {
     }
 
-    public User(String email, String pwd, String nom, String prenom, byte[] photo, int num_tel, String ville, int valeur_fidelite, boolean role) {
+    public User(String email, String pwd, String nom, String prenom, byte[] photo, String num_tel, String ville, int valeur_fidelite, boolean role) {
         this.email = email;
         this.pwd = pwd;
         this.nom = nom;
@@ -87,11 +87,11 @@ public class User {
         this.photo = photo;
     }
 
-    public int getNum_tel() {
+    public String getNum_tel() {
         return num_tel;
     }
 
-    public void setNum_tel(int num_tel) {
+    public void setNum_tel(String num_tel) {
         this.num_tel = num_tel;
     }
 

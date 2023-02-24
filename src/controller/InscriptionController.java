@@ -87,12 +87,12 @@ public class InscriptionController implements Initializable {
     private void ON_inscrire_clicked(ActionEvent event) throws SQLException {
         CRUDUser sa = new CRUDUser();
         byte[] i=null;
-        User u = new User("","","","",i,0,"",0,false);
+        User u = new User("","","","",i,"","",0,false);
         u.setEmail(TF_email.getText());
         u.setPwd(TF_mdp.getText());
         u.setNom(TF_nom.getText());
         u.setPrenom(TF_prenom.getText());
-        u.setNum_tel(Integer.parseInt(TF_num.getText()));
+        u.setNum_tel(TF_num.getText());
         u.setVille(villes_box.getValue());
 
         sa.ajouterUser(u);

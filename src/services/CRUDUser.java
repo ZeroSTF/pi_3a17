@@ -45,7 +45,7 @@ public class CRUDUser implements InterfaceCRUDUser{
         stmt.setString(3, user.getNom());
         stmt.setString(4, user.getPrenom());
         stmt.setBytes(5, user.getPhoto());
-        stmt.setInt(6, user.getNum_tel());
+        stmt.setString(6, user.getNum_tel());
         stmt.setString(7, user.getVille());
         stmt.setInt(8, user.getValeur_fidelite());
         stmt.setBoolean(9, user.isRole());
@@ -63,7 +63,7 @@ public class CRUDUser implements InterfaceCRUDUser{
         stmt.setString(3, user.getNom());
         stmt.setString(4, user.getPrenom());
         stmt.setBytes(5, user.getPhoto());
-        stmt.setInt(6,user.getNum_tel());
+        stmt.setString(6,user.getNum_tel());
         stmt.setString(7, user.getVille());
         stmt.setInt(8, user.getValeur_fidelite());
         stmt.setBoolean(9, user.isRole());
@@ -143,7 +143,7 @@ public class CRUDUser implements InterfaceCRUDUser{
         user.setNom(rs.getString("nom"));
         user.setPrenom(rs.getString("prenom"));
         user.setPhoto(rs.getBytes("photo"));
-        user.setNum_tel(rs.getInt("num_tel"));
+        user.setNum_tel(rs.getString("num_tel"));
         user.setVille(rs.getString("ville"));
         user.setValeur_fidelite(rs.getInt("valeur_fidelite"));
         user.setRole(rs.getBoolean("role"));

@@ -37,33 +37,13 @@ import services.CRUDUser;
 
 public class TableUserController implements Initializable {
     //CONSTANT STUFF TO COPY
-
-    public String username;
-    public byte[] photo;
-    public String email;
-
-    public String getUsername() {
-        return username;
+    public User currentUser;
+    public User getCurrentUser() {
+        return currentUser;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 
     @FXML
@@ -84,9 +64,9 @@ public class TableUserController implements Initializable {
     @FXML
     void click_disconnect(MouseEvent event) throws SQLException {
         CRUDUser sa = new CRUDUser();
-        User u = sa.getUserByEmail(email);
+        User u = sa.getUserByEmail(currentUser.getEmail());
         u.setEtat(User.EtatUser.INACTIF);
-        sa.modifierUser(u, email);
+        sa.modifierUser(u, currentUser.getEmail());
         LoginUIController loginUIController = new LoginUIController();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUI.fxml"));
@@ -175,9 +155,7 @@ public class TableUserController implements Initializable {
     @FXML
     void click_events(MouseEvent event) {
         TableEventController tableEventController = new TableEventController();
-        tableEventController.setUsername(username);
-        tableEventController.setEmail(email);
-        tableEventController.setPhoto(photo);
+        tableEventController.setCurrentUser(currentUser);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));
@@ -236,28 +214,39 @@ public class TableUserController implements Initializable {
 
     @FXML
     void click_modif_user(MouseEvent event) {
-        ModifUserController modifusercontroller = new ModifUserController();
-        modifusercontroller.setUsername(username);
-        modifusercontroller.setEmail(email);
-        modifusercontroller.setPhoto(photo);
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ModifUser.fxml"));
+        User selectedUser = table_users.getSelectionModel().getSelectedItem();
+        if (selectedUser == null) {
+            // Aucun utilisateur sélectionné, afficher un message d'avertissement
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Aucun utilisateur sélectionné");
+            alert.setHeaderText(null);
+            alert.setContentText("Veuillez sélectionner un utilisateur à modifier.");
+            alert.showAndWait();
+        } else {
+            ModifUserController modifusercontroller = new ModifUserController();
+            modifusercontroller.setCurrentUser(currentUser);
 
-            // set the controller instance
-            loader.setController(modifusercontroller);
+            modifusercontroller.setUser(selectedUser);
 
-            Parent root = loader.load();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ModifUser.fxml"));
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                // set the controller instance
+                loader.setController(modifusercontroller);
 
-            Scene scene = new Scene(root);
+                Parent root = loader.load();
 
-            stage.setScene(scene);
-            stage.show();
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+                stage.show();
+
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
 
     }
@@ -314,9 +303,7 @@ public class TableUserController implements Initializable {
     @FXML
     void click_ajout_user(MouseEvent event) {
         AjoutUserController ajoutusercontroller = new AjoutUserController();
-        ajoutusercontroller.setUsername(username);
-        ajoutusercontroller.setEmail(email);
-        ajoutusercontroller.setPhoto(photo);
+        ajoutusercontroller.setCurrentUser(currentUser);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AjoutUser.fxml"));
@@ -341,8 +328,8 @@ public class TableUserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        label_nomUser.setText(this.getUsername());
-        InputStream inputStream = new ByteArrayInputStream(photo);
+        label_nomUser.setText(currentUser.getPrenom() + " " + currentUser.getNom());
+        InputStream inputStream = new ByteArrayInputStream(currentUser.getPhoto());
         Image image = new Image(inputStream);
         img_user.setImage(image);
         img_user.setPreserveRatio(true);
