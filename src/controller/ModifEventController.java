@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -23,6 +24,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -46,6 +48,7 @@ public class ModifEventController implements Initializable {
 
     public Evenement event_e;
     public User currentUser;
+
     public User getCurrentUser() {
         return currentUser;
     }
@@ -61,8 +64,7 @@ public class ModifEventController implements Initializable {
     public void setEvent_e(Evenement event_e) {
         this.event_e = event_e;
     }
-    
-    
+
     @FXML
     private Label label_nomUser;
 
@@ -71,48 +73,47 @@ public class ModifEventController implements Initializable {
 
     @FXML
     private Button btn_events;
-        
+
     @FXML
     private Button btn_disconnect;
-    
+
     @FXML
     private ImageView img_user;
-    
-     @FXML
+
+    @FXML
     void click_disconnect(MouseEvent event) throws SQLException {
         CRUDUser sa = new CRUDUser();
-        User u=sa.getUserByEmail(currentUser.getEmail());
+        User u = sa.getUserByEmail(currentUser.getEmail());
         u.setEtat(User.EtatUser.INACTIF);
         sa.modifierUser(u, currentUser.getEmail());
         LoginUIController loginUIController = new LoginUIController();
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUI.fxml"));
-                
-                // set the controller instance
-                loader.setController(loginUIController);
-                
-                Parent root = loader.load();
-                
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                
-                Scene scene = new Scene(root);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUI.fxml"));
 
-                stage.setScene(scene);
-                stage.show();
-                
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
+            // set the controller instance
+            loader.setController(loginUIController);
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
-    
+
     @FXML
     void mEnter(MouseEvent event) {
         Button btn = (Button) event.getSource();
         if (btn.equals(btn_users)) {
-        btn_users.setStyle("-fx-background-color: rgb(232, 171, 0); -fx-text-fill: white;");
-        }
-        else if (btn.equals(btn_events)) {
-        btn_events.setStyle("-fx-background-color: rgb(232, 171, 0); -fx-text-fill: white;");
+            btn_users.setStyle("-fx-background-color: rgb(232, 171, 0); -fx-text-fill: white;");
+        } else if (btn.equals(btn_events)) {
+            btn_events.setStyle("-fx-background-color: rgb(232, 171, 0); -fx-text-fill: white;");
         }
     }
 
@@ -120,10 +121,9 @@ public class ModifEventController implements Initializable {
     void mExit(MouseEvent event) {
         Button btn = (Button) event.getSource();
         if (btn.equals(btn_users)) {
-        btn_users.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
-        }
-        else if (btn.equals(btn_events)) {
-        btn_events.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
+            btn_users.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
+        } else if (btn.equals(btn_events)) {
+            btn_events.setStyle("-fx-background-color: rgb(252, 215, 69); -fx-text-fill: white;");
         }
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,8 +142,6 @@ public class ModifEventController implements Initializable {
 
     @FXML
     private Button btn_modif;
-   
-    
 
     /**
      * Initializes the controller class.
@@ -160,9 +158,8 @@ public class ModifEventController implements Initializable {
         Image image = new Image(inputStream);
         img_user.setImage(image);
         img_user.setPreserveRatio(true);
-        
-        
-    }    
+
+    }
 
     @FXML
     private void click_modif(MouseEvent event) throws SQLException {
@@ -179,26 +176,6 @@ public class ModifEventController implements Initializable {
             return;
         }
 
-//// Vérification que le nom est valide
-//        if (!nom.matches("[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*")) {
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Erreur");
-//            alert.setHeaderText("Le nom n'est pas valide");
-//            alert.showAndWait();
-//            return;
-//        }
-//
-        CRUDEvenement crudEvent = new CRUDEvenement();
-//
-//// Vérification de l'unicité du nom
-//        if (crudEvent.existeEvenement(nom)) {
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("Erreur");
-//            alert.setHeaderText("Un événement avec ce nom existe déjà");
-//            alert.showAndWait();
-//            return;
-//        }
-
 // Vérification que la date de début est avant la date de fin
         if (dateDebut.isAfter(dateFin)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -208,88 +185,93 @@ public class ModifEventController implements Initializable {
             return;
         }
 
-        Evenement newEvent = new Evenement(nom, description, dateDebut, dateFin);
-        crudEvent.modifierEvenement(newEvent,event_e.getId());
+// Demander une confirmation avant la modification
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirmation");
+        confirmation.setHeaderText("Voulez-vous vraiment modifier cet événement ?");
+        Optional<ButtonType> result = confirmation.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Evenement newEvent = new Evenement(nom, description, dateDebut, dateFin);
+            CRUDEvenement crudEvent = new CRUDEvenement();
+            crudEvent.modifierEvenement(newEvent, event_e.getId());
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Succès");
-        alert.setHeaderText("Événement modifié avec succès");
-        alert.showAndWait();
-        TableEventController tableEventController = new TableEventController();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Succès");
+            alert.setHeaderText("Événement modifié avec succès");
+            alert.showAndWait();
+
+            TableEventController tableEventController = new TableEventController();
             tableEventController.setCurrentUser(currentUser);
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));
-                
+
                 // set the controller instance
                 loader.setController(tableEventController);
-                
+
                 Parent root = loader.load();
-                
+
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                
+
                 Scene scene = new Scene(root);
 
                 stage.setScene(scene);
                 stage.show();
-                
+
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
-        
+        }
     }
-
-
 
     @FXML
     void click_users(MouseEvent event) {
         TableUserController tableUserController = new TableUserController();
         tableUserController.setCurrentUser(currentUser);
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
-                
-                // set the controller instance
-                loader.setController(tableUserController);
-                
-                Parent root = loader.load();
-                
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                
-                Scene scene = new Scene(root);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
 
-                stage.setScene(scene);
-                stage.show();
-                
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
+            // set the controller instance
+            loader.setController(tableUserController);
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @FXML
     private void click_events(MouseEvent event) {
         TableEventController tableEventController = new TableEventController();
-            tableEventController.setCurrentUser(currentUser);
+        tableEventController.setCurrentUser(currentUser);
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));
-                
-                // set the controller instance
-                loader.setController(tableEventController);
-                
-                Parent root = loader.load();
-                
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                
-                Scene scene = new Scene(root);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));
 
-                stage.setScene(scene);
-                stage.show();
-                
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
+            // set the controller instance
+            loader.setController(tableEventController);
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
-    
-    
+
 }

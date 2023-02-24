@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -231,8 +233,7 @@ public class ModifUserController implements Initializable {
     @FXML
     private void click_modif(MouseEvent event) throws SQLException {
         CRUDUser sa = new CRUDUser();
-
-        // Get the values from the input fields
+// Get the values from the input fields
         String nom = txt_nom.getText();
         String prenom = txt_prenom.getText();
         String email = txt_email.getText();
@@ -240,40 +241,20 @@ public class ModifUserController implements Initializable {
         String numTel = txt_numtel.getText();
         String ville = cbx_ville.getSelectionModel().getSelectedItem();
         String role = cbx_role.getSelectionModel().getSelectedItem();
-        String etat= cbx_etat.getSelectionModel().getSelectedItem();
-        boolean r;
-        if (role == "Admin") {
-            r = true;
-        } else {
-            r = false;
-        }
+        String etat = cbx_etat.getSelectionModel().getSelectedItem();
+        boolean r = role.equals("Admin");
 
-        // Validate the input values
+// Validate the input values
         boolean inputValid = true;
         String errorMessage = "";
 
-//        // Check if email is in a valid format
-//        if (!email.matches("\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b")) {
-//            inputValid = false;
-//            errorMessage += "Le champ email doit être au format d'un email valide.\n";
-//        }
-//        // Check if email is already in use
-//        if (sa.emailExists(email)) {
-//            inputValid = false;
-//            errorMessage += "Cet email est déjà utilisé par un autre utilisateur.\n";
-//        }
-        // Check if numTel has 8 digits
+// Check if numTel has 8 digits
         if (numTel.length() != 8 || !numTel.matches("\\d{8}")) {
             inputValid = false;
             errorMessage += "Le champ numéro de téléphone doit être composé de 8 chiffres.\n";
         }
 
-//        // Check if password has at least 6 characters
-//        if (password.length() < 6) {
-//            inputValid = false;
-//            errorMessage += "Le champ mot de passe doit contenir au moins 6 caractères.\n";
-//        }
-        // Check if any field is empty
+// Check if any field is empty
         if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || password.isEmpty() || numTel.isEmpty() || ville == null || role == null) {
             inputValid = false;
             errorMessage += "Tous les champs doivent être remplis.\n";
@@ -299,38 +280,46 @@ public class ModifUserController implements Initializable {
             user.setSalt(this.user.getSalt());
             user.setToken(this.user.getToken());
 
-            // Call the method to add the user to the database
-            sa.modifierUser(user, this.user.getEmail());
-
-            // Show a success message
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Modification utilisateur");
+            // Show a confirmation message before updating the user
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation de modification");
             alert.setHeaderText(null);
-            alert.setContentText("Utilisateur modifié avec succès !");
-            alert.showAndWait();
+            alert.setContentText("Voulez-vous vraiment modifier cet utilisateur ?");
+            Optional<ButtonType> result = alert.showAndWait();
 
-            TableUserController tableUserController = new TableUserController();
-        tableUserController.setCurrentUser(currentUser);
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // Call the method to update the user in the database
+                sa.modifierUser(user, this.user.getEmail());
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
+                // Show a success message
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Modification utilisateur");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Utilisateur modifié avec succès !");
+                successAlert.showAndWait();
 
-            // set the controller instance
-            loader.setController(tableUserController);
+                TableUserController tableUserController = new TableUserController();
+                tableUserController.setCurrentUser(currentUser);
 
-            Parent root = loader.load();
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    // set the controller instance
+                    loader.setController(tableUserController);
 
-            Scene scene = new Scene(root);
+                    Parent root = loader.load();
 
-            stage.setScene(scene);
-            stage.show();
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+                    Scene scene = new Scene(root);
 
+                    stage.setScene(scene);
+                    stage.show();
+
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
         } else {
             // Show the error message
             Alert alert = new Alert(Alert.AlertType.ERROR);

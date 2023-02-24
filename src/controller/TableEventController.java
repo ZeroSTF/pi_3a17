@@ -179,7 +179,6 @@ public class TableEventController implements Initializable {
         } else {
             ModifEventController modifeventcontroller = new ModifEventController();
             modifeventcontroller.setCurrentUser(currentUser);
-
             modifeventcontroller.setEvent_e(selectedEvent);
 
             try {

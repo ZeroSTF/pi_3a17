@@ -41,7 +41,7 @@ public class CRUDEvenement implements InterfaceCRUDEvenement{
         stmt.setString(2, evenement.getDescription());
         stmt.setDate(3, Date.valueOf(evenement.getDate_d()));
         stmt.setDate(4, Date.valueOf(evenement.getDate_f()));
-        stmt.setInt(5, evenement.getId());
+        stmt.setInt(5, id);
         stmt.executeUpdate();
     }
 
