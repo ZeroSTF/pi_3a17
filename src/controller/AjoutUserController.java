@@ -44,6 +44,7 @@ public class AjoutUserController implements Initializable {
 
     public byte[] uploadedImage = null;
     public User currentUser;
+
     public User getCurrentUser() {
         return currentUser;
     }
@@ -51,7 +52,6 @@ public class AjoutUserController implements Initializable {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
-
 
     @FXML
     private TextField txt_email;
@@ -208,27 +208,27 @@ public class AjoutUserController implements Initializable {
             alert.setContentText("Utilisateur ajouté avec succès !");
             alert.showAndWait();
 
-             TableUserController tableUserController = new TableUserController();
-                tableUserController.setCurrentUser(currentUser);
+            TableUserController tableUserController = new TableUserController();
+            tableUserController.setCurrentUser(currentUser);
 
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
 
-                    // set the controller instance
-                    loader.setController(tableUserController);
+                // set the controller instance
+                loader.setController(tableUserController);
 
-                    Parent root = loader.load();
+                Parent root = loader.load();
 
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                    Scene scene = new Scene(root);
+                Scene scene = new Scene(root);
 
-                    stage.setScene(scene);
-                    stage.show();
+                stage.setScene(scene);
+                stage.show();
 
-                } catch (IOException ex) {
-                    System.out.println(ex.getMessage());
-                }
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
         } else {
             // Show the error message
             Alert alert = new Alert(Alert.AlertType.ERROR);

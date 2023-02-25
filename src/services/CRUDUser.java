@@ -22,14 +22,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
 import utils.DBConnection;
 
 /**
@@ -63,6 +59,10 @@ public class CRUDUser implements InterfaceCRUDUser {
         stmt.setString(11, null);
         stmt.setString(12, User.EtatUser.INACTIF.toString());
         stmt.executeUpdate();
+        // Envoyer un email à l'utilisateur
+        String subject = "Bienvenue sur TuniTroc";
+        String body = "Cher/Chère " + user.getPrenom() + ",\n\nBienvenue sur TuniTroc !\n\nVotre compte a été créé avec succès.\n\nMeilleures salutations,\nL'équipe de TuniTroc";
+        sendEmail(user.getEmail(), subject, body);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class CRUDUser implements InterfaceCRUDUser {
             String token = generateToken();
             user.setToken(token);
             user.setEtat(User.EtatUser.ACTIF);
-            modifierUser(user,email);
+            modifierUser(user, email);
             return hashedPassword.equals(user.getPwd());
         } else {
             return false;
@@ -223,6 +223,37 @@ public class CRUDUser implements InterfaceCRUDUser {
         }
         System.out.println(userList);
         return userList;
+    }
+
+    private void sendEmail(String recipient, String subject, String body) {
+        String host = "smtp.gmail.com";
+        String username = "riadh.chnitir@esprit.tn";
+        String password = "201JMT4768";
+        String from = "TuniTroc <riadh.chnitir@esprit.tn>";
+        String to = recipient;
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                return new javax.mail.PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.setSubject(subject);
+            message.setText(body);
+            Transport.send(message);
+        } catch (MessagingException ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

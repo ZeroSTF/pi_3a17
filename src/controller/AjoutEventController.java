@@ -40,8 +40,9 @@ import services.CRUDUser;
  */
 public class AjoutEventController implements Initializable {
     //CONSTANT STUFF TO COPY
-    
+
     public User currentUser;
+
     public User getCurrentUser() {
         return currentUser;
     }
@@ -49,7 +50,6 @@ public class AjoutEventController implements Initializable {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
-
 
     @FXML
     private Label label_nomUser;
@@ -192,26 +192,26 @@ public class AjoutEventController implements Initializable {
         alert.showAndWait();
 
         TableEventController tableEventController = new TableEventController();
-            tableEventController.setCurrentUser(currentUser);
+        tableEventController.setCurrentUser(currentUser);
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));
 
-                // set the controller instance
-                loader.setController(tableEventController);
+            // set the controller instance
+            loader.setController(tableEventController);
 
-                Parent root = loader.load();
+            Parent root = loader.load();
 
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                Scene scene = new Scene(root);
+            Scene scene = new Scene(root);
 
-                stage.setScene(scene);
-                stage.show();
+            stage.setScene(scene);
+            stage.show();
 
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @FXML
@@ -243,7 +243,7 @@ public class AjoutEventController implements Initializable {
     private void click_events(MouseEvent event) {
         TableEventController tableEventController = new TableEventController();
         tableEventController.setCurrentUser(currentUser);
-        
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));
 
