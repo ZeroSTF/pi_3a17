@@ -225,11 +225,11 @@ public class CRUDUser implements InterfaceCRUDUser {
         return userList;
     }
 
-    private void sendEmail(String recipient, String subject, String body) {
+    public void sendEmail(String recipient, String subject, String body) {
         String host = "smtp.gmail.com";
-        String username = "riadh.chnitir@esprit.tn";
-        String password = "201JMT4768";
-        String from = "TuniTroc <riadh.chnitir@esprit.tn>";
+        String username = "tunitrocPI@gmail.com";
+        String password = "lhnscnmnkwypandz";
+        String from = "TuniTroc <tunitrocPI@gmail.com>";
         String to = recipient;
 
         Properties props = new Properties();
