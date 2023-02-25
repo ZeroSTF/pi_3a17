@@ -104,6 +104,17 @@ public class CRUDUser implements InterfaceCRUDUser{
         }
     }
     
+    public User getUserById(int id) throws SQLException {
+        PreparedStatement stmt = TuniTrocDB.prepareStatement("SELECT * FROM user WHERE id=?");
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return getUserFromResultSet(rs);
+        } else {
+            return null;
+        }
+    }
+    
     public boolean login(String email, String password) throws SQLException {
         User user = getUserByEmail(email);
         if (user != null && user.getEtat() != User.EtatUser.ACTIF) {
