@@ -157,6 +157,7 @@ public class CRUDUser implements InterfaceCRUDUser {
         User user = getUserByEmail(email);
         if (user != null) {
             user.setToken(null);
+            user.setEtat(User.EtatUser.INACTIF);
             modifierUser(user, email);
         }
     }
