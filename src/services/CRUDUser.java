@@ -6,6 +6,7 @@
 package services;
 
 import entities.User;
+import java.net.PasswordAuthentication;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -18,8 +19,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import utils.DBConnection;
 
 /**
@@ -119,6 +129,8 @@ public class CRUDUser implements InterfaceCRUDUser {
         User user = getUserByEmail(email);
         if (user != null && user.getEtat() != User.EtatUser.ACTIF) {
             String hashedPassword = hashPassword(password, user.getSalt());
+            String token = generateToken();
+            user.setToken(token);
             return hashedPassword.equals(user.getPwd());
         } else {
             return false;

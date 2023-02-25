@@ -10,6 +10,7 @@ package entities;
  * @author ZeroS TF
  */
 public class User {
+
     private int id;
     private String email;
     private String pwd;
@@ -23,7 +24,7 @@ public class User {
     private String salt;
     private String token;
     private EtatUser etat;
-    
+
     public User() {
     }
 
@@ -103,7 +104,6 @@ public class User {
         this.ville = ville;
     }
 
-
     public int getValeur_fidelite() {
         return valeur_fidelite;
     }
@@ -149,8 +149,6 @@ public class User {
         return "User{" + "id=" + id + ", email=" + email + ", pwd=" + pwd + ", nom=" + nom + ", prenom=" + prenom + ", photo=" + photo + ", num_tel=" + num_tel + ", ville=" + ville + ", valeur_fidelite=" + valeur_fidelite + ", role=" + role + ", salt=" + salt + ", token=" + token + ", etat=" + etat + '}';
     }
 
-    
-    
     public enum EtatUser {
         ACTIF,
         INACTIF,
@@ -158,7 +156,8 @@ public class User {
         NONBLOQUE,
         ENATTENTECONFIRMATION
     }
-    
-    
 
+    public boolean isLoggedIn() {
+        return token != null;
+    }
 }
