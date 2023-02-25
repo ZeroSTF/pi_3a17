@@ -29,6 +29,13 @@ public class Evenement {
         this.date_f = date_f;
     }
 
+    public Evenement(String nom, String description, LocalDate date_d, LocalDate date_f) {
+        this.nom = nom;
+        this.description = description;
+        this.date_d = date_d;
+        this.date_f = date_f;
+    }
+
     public int getId() {
         return id;
     }

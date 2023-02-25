@@ -10,24 +10,25 @@ package entities;
  * @author ZeroS TF
  */
 public class User {
+
     private int id;
     private String email;
     private String pwd;
     private String nom;
     private String prenom;
-    private String photo;
-    private int num_tel;
+    private byte[] photo;
+    private String num_tel;
     private String ville;
     private int valeur_fidelite;
     private boolean role;
     private String salt;
     private String token;
     private EtatUser etat;
-    
+
     public User() {
     }
 
-    public User(String email, String pwd, String nom, String prenom, String photo, int num_tel, String ville, int valeur_fidelite, boolean role) {
+    public User(String email, String pwd, String nom, String prenom, byte[] photo, String num_tel, String ville, int valeur_fidelite, boolean role) {
         this.email = email;
         this.pwd = pwd;
         this.nom = nom;
@@ -79,19 +80,19 @@ public class User {
         this.prenom = prenom;
     }
 
-    public String getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 
-    public int getNum_tel() {
+    public String getNum_tel() {
         return num_tel;
     }
 
-    public void setNum_tel(int num_tel) {
+    public void setNum_tel(String num_tel) {
         this.num_tel = num_tel;
     }
 
@@ -102,7 +103,6 @@ public class User {
     public void setVille(String ville) {
         this.ville = ville;
     }
-
 
     public int getValeur_fidelite() {
         return valeur_fidelite;
@@ -149,8 +149,6 @@ public class User {
         return "User{" + "id=" + id + ", email=" + email + ", pwd=" + pwd + ", nom=" + nom + ", prenom=" + prenom + ", photo=" + photo + ", num_tel=" + num_tel + ", ville=" + ville + ", valeur_fidelite=" + valeur_fidelite + ", role=" + role + ", salt=" + salt + ", token=" + token + ", etat=" + etat + '}';
     }
 
-    
-    
     public enum EtatUser {
         ACTIF,
         INACTIF,
@@ -158,7 +156,8 @@ public class User {
         NONBLOQUE,
         ENATTENTECONFIRMATION
     }
-    
-    
 
+    public boolean isLoggedIn() {
+        return token != null;
+    }
 }

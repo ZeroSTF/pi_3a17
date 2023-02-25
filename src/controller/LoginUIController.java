@@ -64,18 +64,13 @@ private void ON_seconnecter_clicked(ActionEvent event) throws SQLException {
     User user = sa.getUserByEmail(email);
     System.out.println("logging in...");
     if (sa.login(email, password)) {
-        sa.setToken(user.getEmail());
-        user.setEtat(User.EtatUser.ACTIF);
-        sa.modifierUser(user, email);
-
         if (user.isRole()) {
             alert.setAlertType(Alert.AlertType.INFORMATION);
             alert.setContentText("Admin connecté");
             alert.show();
 
             TableUserController tableUserController = new TableUserController();
-            tableUserController.setUsername(user.getPrenom() + " " + user.getNom());
-            tableUserController.setEmail(email);
+            tableUserController.setCurrentUser(user);
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
