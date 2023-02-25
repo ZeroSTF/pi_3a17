@@ -193,11 +193,27 @@ public class AjoutEventController implements Initializable {
         alert.setHeaderText("Événement ajouté avec succès");
         alert.showAndWait();
 
-// clear the input fields
-        txt_nom.clear();
-        txt_description.clear();
-        pick_dd.setValue(null);
-        pick_df.setValue(null);
+        TableEventController tableEventController = new TableEventController();
+            tableEventController.setCurrentUser(currentUser);
+
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));
+
+                // set the controller instance
+                loader.setController(tableEventController);
+
+                Parent root = loader.load();
+
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+                stage.show();
+
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
     }
 
     @FXML

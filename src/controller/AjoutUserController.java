@@ -208,15 +208,27 @@ public class AjoutUserController implements Initializable {
             alert.setContentText("Utilisateur ajouté avec succès !");
             alert.showAndWait();
 
-            // Clear the input fields
-            txt_nom.clear();
-            txt_prenom.clear();
-            txt_email.clear();
-            txt_pwd.clear();
-            txt_numtel.clear();
-            cbx_ville.getSelectionModel().clearSelection();
-            cbx_role.getSelectionModel().clearSelection();
+             TableUserController tableUserController = new TableUserController();
+                tableUserController.setCurrentUser(currentUser);
 
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
+
+                    // set the controller instance
+                    loader.setController(tableUserController);
+
+                    Parent root = loader.load();
+
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                    Scene scene = new Scene(root);
+
+                    stage.setScene(scene);
+                    stage.show();
+
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
         } else {
             // Show the error message
             Alert alert = new Alert(Alert.AlertType.ERROR);
