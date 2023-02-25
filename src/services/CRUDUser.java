@@ -26,10 +26,10 @@ import utils.DBConnection;
  *
  * @author ZeroS TF
  */
-public class CRUDUser implements InterfaceCRUDUser{
+public class CRUDUser implements InterfaceCRUDUser {
 
     Connection TuniTrocDB = DBConnection.getConnection();
-    
+
     @Override
     public void ajouterUser(User user) throws SQLException {
 
@@ -63,7 +63,7 @@ public class CRUDUser implements InterfaceCRUDUser{
         stmt.setString(3, user.getNom());
         stmt.setString(4, user.getPrenom());
         stmt.setBytes(5, user.getPhoto());
-        stmt.setString(6,user.getNum_tel());
+        stmt.setString(6, user.getNum_tel());
         stmt.setString(7, user.getVille());
         stmt.setInt(8, user.getValeur_fidelite());
         stmt.setBoolean(9, user.isRole());
@@ -92,7 +92,7 @@ public class CRUDUser implements InterfaceCRUDUser{
         System.out.println(userList);
         return userList;
     }
-    
+
     public User getUserByEmail(String email) throws SQLException {
         PreparedStatement stmt = TuniTrocDB.prepareStatement("SELECT * FROM user WHERE email=?");
         stmt.setString(1, email);
@@ -103,7 +103,7 @@ public class CRUDUser implements InterfaceCRUDUser{
             return null;
         }
     }
-    
+
     public User getUserById(int id) throws SQLException {
         PreparedStatement stmt = TuniTrocDB.prepareStatement("SELECT * FROM user WHERE id=?");
         stmt.setInt(1, id);
@@ -114,7 +114,7 @@ public class CRUDUser implements InterfaceCRUDUser{
             return null;
         }
     }
-    
+
     public boolean login(String email, String password) throws SQLException {
         User user = getUserByEmail(email);
         if (user != null && user.getEtat() != User.EtatUser.ACTIF) {
@@ -131,7 +131,7 @@ public class CRUDUser implements InterfaceCRUDUser{
             String token = generateToken();
             user.setToken(token);
             user.setEtat(User.EtatUser.INACTIF);
-            modifierUser(user,email);
+            modifierUser(user, email);
             return token;
         } else {
             return null;
@@ -142,7 +142,7 @@ public class CRUDUser implements InterfaceCRUDUser{
         User user = getUserByEmail(email);
         if (user != null) {
             user.setToken(null);
-            modifierUser(user,email);
+            modifierUser(user, email);
         }
     }
 
@@ -163,7 +163,7 @@ public class CRUDUser implements InterfaceCRUDUser{
         user.setEtat(User.EtatUser.valueOf(rs.getString("etat")));
         return user;
     }
-    
+
     private String hashPassword(String password, String salt) {
         // Implement a secure password hashing algorithm, e.g. bcrypt
         // simple SHA-256 hash
@@ -184,15 +184,30 @@ public class CRUDUser implements InterfaceCRUDUser{
 
     @Override
     public boolean emailExists(String email) throws SQLException {
-    String sql = "SELECT COUNT(*) FROM user WHERE email = ?";
-    try (PreparedStatement stmt = TuniTrocDB.prepareStatement(sql)) {
-        stmt.setString(1, email);
-        ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
-            int count = rs.getInt(1);
-            return count > 0;
+        String sql = "SELECT COUNT(*) FROM user WHERE email = ?";
+        try (PreparedStatement stmt = TuniTrocDB.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+            return false;
         }
-        return false;
     }
-}
+
+    public List<User> recherche(String nom) throws SQLException {
+        List<User> userList = new ArrayList<>();
+        String query = "SELECT * FROM user WHERE nom LIKE ? OR prenom LIKE ?";
+        PreparedStatement stmt = TuniTrocDB.prepareStatement(query);
+        stmt.setString(1, "%" + nom + "%");
+        stmt.setString(2, "%" + nom + "%");
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            userList.add(getUserFromResultSet(rs));
+        }
+        System.out.println(userList);
+        return userList;
+    }
+
 }

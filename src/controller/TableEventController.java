@@ -31,6 +31,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -47,6 +48,8 @@ import services.CRUDUser;
 public class TableEventController implements Initializable {
 
     public User currentUser;
+    
+    private ObservableList<Evenement> eventList = FXCollections.observableArrayList();
 
     public User getCurrentUser() {
         return currentUser;
@@ -98,6 +101,9 @@ public class TableEventController implements Initializable {
 
     @FXML
     private TableColumn<Evenement, String> df_event;
+    
+    @FXML
+    private TextField searchBox;
 
     @FXML
     void mEnter(MouseEvent event) {
@@ -317,5 +323,16 @@ public class TableEventController implements Initializable {
         df_event.setCellValueFactory(new PropertyValueFactory<>("date_f"));
 
         table_events.setItems(eventList);
+        
+        //RECHERCHE//////////////////////////
+        // Set up search box listener
+        searchBox.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                eventList.clear();
+                eventList.addAll(sa.recherche(newValue));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

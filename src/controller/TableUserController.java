@@ -29,6 +29,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,6 +40,8 @@ public class TableUserController implements Initializable {
 
     //CONSTANT STUFF TO COPY
     public User currentUser;
+
+    private ObservableList<User> userList = FXCollections.observableArrayList();
 
     public User getCurrentUser() {
         return currentUser;
@@ -153,6 +156,9 @@ public class TableUserController implements Initializable {
     private Button btn_modifier;
     @FXML
     private Button btn_supprimer;
+
+    @FXML
+    private TextField searchBox;
 
     @FXML
     void click_events(MouseEvent event) {
@@ -390,5 +396,16 @@ public class TableUserController implements Initializable {
         etat_user.setCellValueFactory(new PropertyValueFactory<>("etat"));
 
         table_users.setItems(userList);
+
+        //RECHERCHE//////////////////////////
+        // Set up search box listener
+        searchBox.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                userList.clear();
+                userList.addAll(sa.recherche(newValue));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

@@ -154,7 +154,7 @@
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin></FontAwesomeIconView>
-                        <TextField prefHeight="32.0" prefWidth="294.0" promptText="Chercher un utilisateur..." style="-fx-background-color: #fcd745;">
+                        <TextField fx:id="searchBox" prefHeight="32.0" prefWidth="294.0" promptText="Chercher un utilisateur..." style="-fx-background-color: #fcd745;">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
