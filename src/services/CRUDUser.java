@@ -79,7 +79,6 @@ public class CRUDUser implements InterfaceCRUDUser {
         stmt.setBoolean(9, user.isRole());
         stmt.setString(10, user.getSalt());
         stmt.setString(11, user.getToken());
-        System.out.println("TOKEN IS========="+user.getToken());
         stmt.setString(12, user.getEtat().toString());
         stmt.setString(13, email);
         stmt.executeUpdate();
