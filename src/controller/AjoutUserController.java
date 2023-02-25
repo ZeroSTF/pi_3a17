@@ -242,9 +242,7 @@ public class AjoutUserController implements Initializable {
     @FXML
     private void click_disconnect(MouseEvent event) throws SQLException {
         CRUDUser sa = new CRUDUser();
-        User u = sa.getUserByEmail(currentUser.getEmail());
-        u.setEtat(User.EtatUser.INACTIF);
-        sa.modifierUser(u, currentUser.getEmail());
+        sa.logout(currentUser.getEmail());
         LoginUIController loginUIController = new LoginUIController();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/LoginUI.fxml"));
