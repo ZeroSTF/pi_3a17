@@ -15,6 +15,8 @@ import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,7 +49,17 @@ public class ModifUserController implements Initializable {
     //CONSTANT STUFF TO COPY
     public User user;
     public byte[] uploadedImage = null;
+    public int i;
+    public CRUDUser cr7=new CRUDUser();
     public User currentUser;
+
+    public int getI() {
+        return i;
+    }
+
+    public void setI(int i) {
+        this.i = i;
+    }
 
     public User getCurrentUser() {
         return currentUser;
@@ -153,6 +165,11 @@ public class ModifUserController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            currentUser=cr7.getUserById(i);
+        } catch (SQLException ex) {
+            Logger.getLogger(AjoutEventController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         label_nomUser.setText(currentUser.getPrenom() + " " + currentUser.getNom());
         InputStream inputStream = new ByteArrayInputStream(currentUser.getPhoto());
         Image image = new Image(inputStream);
@@ -276,7 +293,12 @@ public class ModifUserController implements Initializable {
             user.setRole(r);
             user.setEtat(User.EtatUser.valueOf(etat));
             user.setSalt(this.user.getSalt());
+            if(etat=="ACTIF"){
             user.setToken(this.user.getToken());
+            }
+            else{
+                user.setToken(null);
+            }
 
             // Show a confirmation message before updating the user
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -297,7 +319,7 @@ public class ModifUserController implements Initializable {
                 successAlert.showAndWait();
 
                 TableUserController tableUserController = new TableUserController();
-                tableUserController.setCurrentUser(currentUser);
+                tableUserController.setI(i);
 
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
@@ -331,7 +353,7 @@ public class ModifUserController implements Initializable {
     @FXML
     void click_users(MouseEvent event) {
         TableUserController tableUserController = new TableUserController();
-        tableUserController.setCurrentUser(currentUser);
+        tableUserController.setI(i);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
@@ -356,7 +378,7 @@ public class ModifUserController implements Initializable {
     @FXML
     private void click_events(MouseEvent event) {
         TableEventController tableEventController = new TableEventController();
-        tableEventController.setCurrentUser(currentUser);
+        tableEventController.setI(i);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));

@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,7 +49,17 @@ public class ModifEventController implements Initializable {
     //CONSTANT STUFF TO COPY
 
     public Evenement event_e;
+    public int i;
+    public CRUDUser cr7=new CRUDUser();
     public User currentUser;
+
+    public int getI() {
+        return i;
+    }
+
+    public void setI(int i) {
+        this.i = i;
+    }
 
     public User getCurrentUser() {
         return currentUser;
@@ -151,6 +163,11 @@ public class ModifEventController implements Initializable {
         txt_description.setText(event_e.getDescription());
         pick_dd.setValue(event_e.getDate_d());
         pick_df.setValue(event_e.getDate_f());
+        try {
+            currentUser=cr7.getUserById(i);
+        } catch (SQLException ex) {
+            Logger.getLogger(AjoutEventController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         label_nomUser.setText(currentUser.getPrenom() + " " + currentUser.getNom());
         InputStream inputStream = new ByteArrayInputStream(currentUser.getPhoto());
         Image image = new Image(inputStream);
@@ -199,7 +216,7 @@ public class ModifEventController implements Initializable {
             alert.showAndWait();
 
             TableEventController tableEventController = new TableEventController();
-            tableEventController.setCurrentUser(currentUser);
+            tableEventController.setI(i);
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));
@@ -225,7 +242,7 @@ public class ModifEventController implements Initializable {
     @FXML
     void click_users(MouseEvent event) {
         TableUserController tableUserController = new TableUserController();
-        tableUserController.setCurrentUser(currentUser);
+        tableUserController.setI(i);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
@@ -250,7 +267,7 @@ public class ModifEventController implements Initializable {
     @FXML
     private void click_events(MouseEvent event) {
         TableEventController tableEventController = new TableEventController();
-        tableEventController.setCurrentUser(currentUser);
+        tableEventController.setI(i);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));

@@ -14,6 +14,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,7 +45,17 @@ import services.CRUDUser;
 public class AjoutUserController implements Initializable {
 
     public byte[] uploadedImage = null;
+    public int i;
+    public CRUDUser cr7=new CRUDUser();
     public User currentUser;
+
+    public int getI() {
+        return i;
+    }
+
+    public void setI(int i) {
+        this.i = i;
+    }
 
     public User getCurrentUser() {
         return currentUser;
@@ -87,6 +99,11 @@ public class AjoutUserController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            currentUser=cr7.getUserById(i);
+        } catch (SQLException ex) {
+            Logger.getLogger(AjoutEventController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         label_nomUser.setText(currentUser.getPrenom() + " " + currentUser.getNom());
         InputStream inputStream = new ByteArrayInputStream(currentUser.getPhoto());
         Image image = new Image(inputStream);
@@ -209,7 +226,7 @@ public class AjoutUserController implements Initializable {
             alert.showAndWait();
 
             TableUserController tableUserController = new TableUserController();
-            tableUserController.setCurrentUser(currentUser);
+            tableUserController.setI(i);
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
@@ -287,7 +304,7 @@ public class AjoutUserController implements Initializable {
     @FXML
     void click_users(MouseEvent event) {
         TableUserController tableUserController = new TableUserController();
-        tableUserController.setCurrentUser(currentUser);
+        tableUserController.setI(i);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
@@ -312,7 +329,7 @@ public class AjoutUserController implements Initializable {
     @FXML
     private void click_events(MouseEvent event) {
         TableEventController tableEventController = new TableEventController();
-        tableEventController.setCurrentUser(currentUser);
+        tableEventController.setI(i);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));

@@ -70,7 +70,7 @@ private void ON_seconnecter_clicked(ActionEvent event) throws SQLException {
             alert.show();
 
             TableUserController tableUserController = new TableUserController();
-            tableUserController.setCurrentUser(user);
+            tableUserController.setI(user.getId());
 
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));

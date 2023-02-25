@@ -39,7 +39,17 @@ import services.CRUDUser;
 public class TableUserController implements Initializable {
 
     //CONSTANT STUFF TO COPY
+    public int i;
+    //public CRUDUser cr7=new CRUDUser();
     public User currentUser;
+
+    public int getI() {
+        return i;
+    }
+
+    public void setI(int i) {
+        this.i = i;
+    }
 
     private ObservableList<User> userList = FXCollections.observableArrayList();
 
@@ -161,7 +171,7 @@ public class TableUserController implements Initializable {
     @FXML
     void click_events(MouseEvent event) {
         TableEventController tableEventController = new TableEventController();
-        tableEventController.setCurrentUser(currentUser);
+        tableEventController.setI(i);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableEvent.fxml"));
@@ -231,7 +241,7 @@ public class TableUserController implements Initializable {
             alert.showAndWait();
         } else {
             ModifUserController modifusercontroller = new ModifUserController();
-            modifusercontroller.setCurrentUser(currentUser);
+            modifusercontroller.setI(i);
 
             modifusercontroller.setUser(selectedUser);
 
@@ -313,7 +323,7 @@ public class TableUserController implements Initializable {
     @FXML
     void click_ajout_user(MouseEvent event) {
         AjoutUserController ajoutusercontroller = new AjoutUserController();
-        ajoutusercontroller.setCurrentUser(currentUser);
+        ajoutusercontroller.setI(i);
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AjoutUser.fxml"));
@@ -338,6 +348,12 @@ public class TableUserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            CRUDUser cr7=new CRUDUser();
+            currentUser=cr7.getUserById(i);
+        } catch (SQLException ex) {
+            Logger.getLogger(AjoutEventController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         label_nomUser.setText(currentUser.getPrenom() + " " + currentUser.getNom());
         InputStream inputStream = new ByteArrayInputStream(currentUser.getPhoto());
         Image image = new Image(inputStream);
