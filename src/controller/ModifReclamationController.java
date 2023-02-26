@@ -159,7 +159,27 @@ public class ModifReclamationController implements Initializable {
 
     @FXML
     void click_fidelite(MouseEvent event) {
+        TableFideliteController tableFideliteController = new TableFideliteController();
+        //tableFideliteController.setCurrentUser(currentUser);
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableFidelite.fxml"));
+
+            // set the controller instance
+            loader.setController(tableFideliteController);
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @FXML

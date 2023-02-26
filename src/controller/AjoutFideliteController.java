@@ -98,6 +98,15 @@ public class AjoutFideliteController implements Initializable {
             alert.showAndWait();
             return;
         }
+        
+        if (!valeur.matches("\\d+")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erreur");
+            alert.setHeaderText(null);
+            alert.setContentText("La valeur doit etre un entier !");
+            alert.showAndWait();
+            return;
+        }
 
         CRUDUser cruduser = new CRUDUser();
         int utilId = Integer.parseInt(utilisateur.split(" ")[0]);

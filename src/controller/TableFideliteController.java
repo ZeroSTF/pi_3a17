@@ -35,6 +35,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -48,7 +49,7 @@ import services.CRUDUser;
 /**
  * FXML Controller class
  *
- * @author hedi 
+ * @author hedi
  */
 public class TableFideliteController implements Initializable {
 
@@ -61,7 +62,10 @@ public class TableFideliteController implements Initializable {
 //    public void setCurrentUser(User currentUser) {
 //        this.currentUser = currentUser;
 //    }
-   @FXML
+    @FXML
+    private TextField searchBox;
+
+    @FXML
     private Button btn_disconnect;
 
     @FXML
@@ -138,7 +142,7 @@ public class TableFideliteController implements Initializable {
 
     @FXML
     void click_fids(MouseEvent event) {
-         CRUDFidelite sa = new CRUDFidelite();
+        CRUDFidelite sa = new CRUDFidelite();
 
         List<Fidelite> fidelitesListFromDatabase = null;
         try {
@@ -158,7 +162,7 @@ public class TableFideliteController implements Initializable {
 
     @FXML
     void click_modifier_fidelite(MouseEvent event) {
-         Fidelite selectedFid = table_fidelites.getSelectionModel().getSelectedItem();
+        Fidelite selectedFid = table_fidelites.getSelectionModel().getSelectedItem();
         if (selectedFid == null) {
             // Aucun fidelité sélectionné, afficher un message d'avertissement
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -200,7 +204,7 @@ public class TableFideliteController implements Initializable {
 //        Image image = new Image(inputStream);
 //        img_user.setImage(image);
 //        img_user.setPreserveRatio(true);
-       TableReclamationController tableReclamationController = new TableReclamationController();
+        TableReclamationController tableReclamationController = new TableReclamationController();
         //tableReclamationController.setCurrentUser(currentUser);
 
         try {
@@ -312,9 +316,27 @@ public class TableFideliteController implements Initializable {
             } catch (SQLException ex) {
                 Logger.getLogger(TableReclamationController.class.getName()).log(Level.SEVERE, null, ex);
             }
-            String fullName = user.getId()+" "+user.getPrenom() + " " + user.getNom();
+            String fullName = user.getId() + " " + user.getPrenom() + " " + user.getNom();
             return new SimpleStringProperty(fullName);
         });
         table_fidelites.setItems(fideliteList);
+        // Set up search box listener
+        searchBox.textProperty().addListener((observable, oldValue, newValue) -> {
+            String searchText = newValue.toLowerCase();
+            if (searchText.isEmpty()) {
+                // If search box is empty, show all items
+                table_fidelites.setItems(fideliteList);
+            } else {
+                // Filter the list based on the search text
+                ObservableList<Fidelite> filteredList = FXCollections.observableArrayList();
+                for (Fidelite fidelite : fideliteList) {
+                    if (    String.valueOf(fidelite.getValeur()).toLowerCase().contains(searchText)
+                            || user_fid.getCellData(fidelite).toLowerCase().contains(searchText)) {
+                        filteredList.add(fidelite);
+                    }
+                }
+                table_fidelites.setItems(filteredList);
+            }
+        });
     }
 }

@@ -6,6 +6,7 @@
 package controller;
 
 import entities.Evenement;
+import entities.Fidelite;
 import entities.Reclamation;
 import entities.User;
 import java.io.ByteArrayInputStream;
@@ -34,6 +35,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -59,6 +61,10 @@ public class TableReclamationController implements Initializable {
 //    public void setCurrentUser(User currentUser) {
 //        this.currentUser = currentUser;
 //    }
+    
+    @FXML
+    private TextField searchBox;
+    
     @FXML
     private Button btn_disconnect;
 
@@ -341,5 +347,25 @@ public class TableReclamationController implements Initializable {
             return new ReadOnlyStringWrapper(etatS);
         });
         table_reclamations.setItems(reclamationList);
+        
+        // Set up search box listener
+        searchBox.textProperty().addListener((observable, oldValue, newValue) -> {
+            String searchText = newValue.toLowerCase();
+            if (searchText.isEmpty()) {
+                // If search box is empty, show all items
+                table_reclamations.setItems(reclamationList);
+            } else {
+                // Filter the list based on the search text
+                ObservableList<Reclamation> filteredList = FXCollections.observableArrayList();
+                for (Reclamation reclamation : reclamationList) {
+                    if (expediteur_rec.getCellData(reclamation).toLowerCase().contains(searchText)
+                            || dest_rec.getCellData(reclamation).toLowerCase().contains(searchText)
+                            || etat_rec.getCellData(reclamation).toLowerCase().contains(searchText)) {
+                        filteredList.add(reclamation);
+                    }
+                }
+                table_reclamations.setItems(filteredList);
+            }
+        });
     }
 }
