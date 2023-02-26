@@ -1,8 +1,12 @@
 package javafxapp;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.mysql.cj.MysqlConnection;
 import connection.MyConnection;
 import java.awt.HeadlessException;
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -34,13 +38,26 @@ import javafx.scene.image.ImageView;
 import java.io.InputStream;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static jdk.nashorn.internal.runtime.Debug.id;
 import static org.omg.CORBA.AnySeqHelper.insert;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafxapp.Transporteur;
+import javax.swing.ImageIcon;
+import javafx.stage.FileChooser;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import java.sql.Blob;
+import javafx.beans.value.ObservableValue;
+import javafx.util.Callback;
 
 
 public class FXMLController implements Initializable {
@@ -90,32 +107,56 @@ public class FXMLController implements Initializable {
      @FXML
     private TextField txtPhoto;
      
-     @FXML
-private ImageView imageView;
+       @FXML
+    private Label label;
      
       @FXML
     private Button btnParcourir;
    
     
-    ObservableList<Transporteur> ListM;
+      private Stage stage;
+    private Scene scene;
+    private Parent root;
+private File file;
+private FileInputStream fis;
+        ObservableList<Transporteur> ListM;
     int index =-1;
     Connection con = null;
     ResultSet rs=null;
     PreparedStatement ps=null;
-   
+     public ImageIcon Format= null;
+    String s;
+    byte[] photo=null;
+    
+    
 
-
+    
+    @FXML
+       public void switchToEchange(ActionEvent event) throws IOException{
+    Parent root = FXMLLoader.load(getClass().getResource("Echange.fxml"));
+    stage =(Stage)((Node)event.getSource()).getScene().getWindow();
+       scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();   
+    }
+       
  @FXML
     void Add(ActionEvent event) {
         con=MyConnection.connectDb();
         String sql="insert into transporteur(id,nom,prenom,num_tel,photo) values(?,?,?,?,?)";
         try {
         ps=con.prepareStatement(sql);
+        if (file != null) {
+            fis = new FileInputStream(file);
+            ps.setBinaryStream(5, fis);
+        } else {
+            ps.setNull(5, java.sql.Types.BLOB);
+        }
         ps.setString(1,txtId.getText());
         ps.setString(2,txtNom.getText());
         ps.setString(3,txtPrenom.getText());
        ps.setString(4,txtNum_tel.getText());
-        ps.setString(5,txtPhoto.getText());
+       ps.setBinaryStream(4,(InputStream)fis);
 
 
 ps.execute();
@@ -155,9 +196,9 @@ JOptionPane.showMessageDialog(null, "Transporteur a été ajouté avec succés")
         con=MyConnection.connectDb();
       
             
-String sql="update transporteur set id='"+txtId.getText()+"',nom='"+txtNom.getText()+"',prenom='"+txtPrenom.getText()+"',photo='"+txtPhoto.getText()+"'";
+String sql="update transporteur set nom='"+txtNom.getText()+"',prenom='"+txtPrenom.getText()+"',num_tel='"+txtNum_tel.getText()+"',photo='"+txtPhoto.getText()+"'";
             ps=con.prepareStatement(sql);
-            ps.execute();
+            ps.execute(); 
             JOptionPane.showMessageDialog(null,"transporteur a été modifié avec succés");        
         } catch (Exception e) {
                        JOptionPane.showMessageDialog(null, e);
@@ -167,19 +208,41 @@ String sql="update transporteur set id='"+txtId.getText()+"',nom='"+txtNom.getTe
 
     }
     
-    public void UpdateTable () {
+    public void UpdateTable ()  {
     IdColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, Integer>("id"));
         NomColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, String>("nom"));
     PrenomColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, String>("prenom"));
-     Num_telColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, Integer>("num_tel"));
-    PhotoColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, String>("photo"));
+    Num_telColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, Integer>("num_tel"));
+    PhotoColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, String>("num_tel"));
 ListM =MyConnection.getTransporteurs();
 table.setItems(ListM);    
     }   
-    @FXML
-private void Parcourir(ActionEvent event) {
     
+    
+    
+    @FXML
+ void Parcourir(ActionEvent event) {
+    
+    MyConnection con= new MyConnection();
+   FileChooser chooser = new FileChooser();
+chooser.setTitle("Choisir une image ");
+FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Images", "*.jpg", "*.jpeg", "*.png", "*.gif");
+chooser.getExtensionFilters().add(filter);
+file = chooser.showOpenDialog(null);
+if (file != null) {
+    Image image = new Image(file.toURI().toString());
+    double labelWidth = label.getWidth();
+    double labelHeight = label.getHeight();
+    ImageView imageView = new ImageView(image);
+    imageView.setPreserveRatio(true);
+    imageView.setFitWidth(labelWidth);
+    imageView.setFitHeight(labelHeight);
+    label.setGraphic(imageView);
+    txtPhoto.setText(file.getName());
 }
+}
+
+
 
 @Override
 public void initialize(URL url, ResourceBundle rb) {
@@ -206,6 +269,37 @@ public void getSelected(MouseEvent event){
             {   
         JOptionPane.showMessageDialog(null, e);
 
+    }
+}
+ @FXML
+void PDF(ActionEvent event) {
+    Connection con = MyConnection.connectDb();
+    try {
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("C:/Users/azizn/OneDrive/Documents/pdfs/pdf.pdf"));
+        document.open();
+
+        // Retrieve data from the database
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM transporteur");
+
+        // Loop through the data and add it to the document
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String nom = rs.getString("nom");
+            String prenom = rs.getString("prenom");
+            int num = rs.getInt("email");
+            Blob photo = rs.getBlob("photo");
+            
+
+            // Create a paragraph with the data and add it to the document
+            Paragraph paragraph = new Paragraph("ID: " + id + "\nNom: " + nom + "\nPrénom: " + prenom + "\nNumero de telephone: " + num + "\nPhoto:" + photo + "\n");
+            document.add(paragraph);
+        }
+
+        document.close();
+    } catch (Exception e) {
+        e.printStackTrace();
     }
 }
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="715.0" prefWidth="974.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapp.EchangeController">
+   <children>
+      <Pane prefHeight="720.0" prefWidth="974.0">
+         <children>
+            <Button layoutX="893.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToTransporteur" prefHeight="40.0" prefWidth="63.0" text="Switch" />
+            <Label layoutX="207.0" layoutY="27.0" text="Gestion d'échange">
+               <font>
+                  <Font size="55.0" />
+               </font>
+            </Label>
+            <TableView fx:id="table_e" layoutX="24.0" layoutY="109.0" onMouseClicked="#getSelected" prefHeight="556.0" prefWidth="645.0">
+              <columns>
+                <TableColumn fx:id="IdColumn" prefWidth="112.80002212524414" text="Id echange" />
+                  <TableColumn fx:id="EtatColumn" prefWidth="88.79995727539062" text="Etat" />
+                  <TableColumn fx:id="Prod_sColumn" prefWidth="88.79995727539062" text="Produit_s" />
+                  <TableColumn fx:id="Prod_rColumn" prefWidth="88.79995727539062" text="Produit_r" />
+                  <TableColumn fx:id="TransporteurBColumn" prefWidth="120.80001831054688" text="TransporteurB" />
+                  <TableColumn fx:id="TransporteurColumn" prefWidth="144.0" text="Transporteur" />
+              </columns>
+            </TableView>
+            <ComboBox fx:id="combo_e" layoutX="687.0" layoutY="456.0" prefHeight="40.0" prefWidth="246.0" />
+            <Label layoutX="773.0" layoutY="410.0" text="Etat">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="693.0" layoutY="270.0" text="Affecter un transporteur">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="combo_t" layoutX="682.0" layoutY="320.0" prefHeight="40.0" prefWidth="246.0" />
+            <Button fx:id="btnUpdate" layoutX="687.0" layoutY="566.0" mnemonicParsing="false" onAction="#Update" prefHeight="40.0" prefWidth="246.0" text="Appliquer les modifications">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnDelete" layoutX="687.0" layoutY="625.0" mnemonicParsing="false" onAction="#Delete" prefHeight="40.0" prefWidth="246.0" text="Supprimer ">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <TextField fx:id="txtId" layoutX="714.0" layoutY="198.0" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

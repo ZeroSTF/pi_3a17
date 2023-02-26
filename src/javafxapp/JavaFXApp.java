@@ -10,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import connection.MyConnection;
+import java.io.IOException;
+import javafx.event.ActionEvent;
 
 
 public class JavaFXApp extends Application {
@@ -21,6 +23,7 @@ public class JavaFXApp extends Application {
         stage.setScene(scene);
         stage.show();
     }
+   
 
     public static void main(String[] args) {
         MyConnection con = new MyConnection();

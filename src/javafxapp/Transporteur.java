@@ -1,5 +1,6 @@
 package javafxapp;
 
+import java.sql.Blob;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -14,9 +15,9 @@ public class Transporteur {
     private String nom;
     private String prenom;
     private Integer num_tel;
-    private String  photo;
+    private Blob  photo;
 
-    public Transporteur(Integer id, String nom, String prenom, Integer num_tel, String photo) {
+    public Transporteur(Integer id, String nom, String prenom, Integer num_tel, Blob photo) {
     this.id =  id;
     this.nom = nom;
     this.prenom = prenom;
@@ -55,11 +56,11 @@ public String getNom() {
         this.num_tel = num_tel;
     }
     
-    public String getPhoto() {
+    public Blob getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
+    public void setPhoto(Blob photo) {
         this.photo = photo;
     }
     

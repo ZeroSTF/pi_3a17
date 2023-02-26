@@ -12,7 +12,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="627.0" prefWidth="915.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapp.FXMLController">
    <children>
-      <Pane layoutX="14.0" layoutY="93.0" prefHeight="410.0" prefWidth="416.0" style="-fx-background-color: grey;">
+      <Pane layoutX="14.0" layoutY="93.0" prefHeight="458.0" prefWidth="416.0" style="-fx-background-color: grey;">
          <children>
             <Label layoutX="8.0" layoutY="64.0" text="Nom">
                <font>
@@ -41,7 +41,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            <TextField fx:id="txtPhoto" layoutX="13.0" layoutY="333.0" prefHeight="26.0" prefWidth="372.0" />
+            <TextField fx:id="txtPhoto" layoutX="14.0" layoutY="408.0" prefHeight="26.0" prefWidth="372.0" />
             <Label layoutX="19.0" layoutY="14.0" text="ID">
                <font>
                   <Font size="18.0" />
@@ -50,6 +50,7 @@
             <TextField fx:id="txtId" layoutX="189.0" layoutY="15.0" prefHeight="25.0" prefWidth="207.0" />
             <TabPane layoutX="-18.0" layoutY="-59.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" />
             <TextField fx:id="txtNum_tel" layoutX="189.0" layoutY="166.0" prefHeight="25.0" prefWidth="207.0" />
+            <Label fx:id="label" layoutX="146.0" layoutY="221.0" prefHeight="178.0" prefWidth="250.0" />
          </children>
       </Pane>
       <Label layoutX="156.0" layoutY="7.0" prefHeight="72.0" prefWidth="544.0" text="Gestion du Transport">
@@ -66,20 +67,23 @@
             <TableColumn fx:id="Num_telColumn" prefWidth="78.39990234375" text="Num_tel" />
         </columns>
       </TableView>
-      <Button fx:id="btnAdd" layoutX="21.0" layoutY="507.0" mnemonicParsing="false" onAction="#Add" prefHeight="38.0" prefWidth="93.0" text="Ajouter">
+      <Button fx:id="btnAdd" layoutX="39.0" layoutY="561.0" mnemonicParsing="false" onAction="#Add" prefHeight="38.0" prefWidth="93.0" text="Ajouter">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnUpdate" layoutX="169.0" layoutY="507.0" mnemonicParsing="false" onAction="#Update" prefHeight="38.0" prefWidth="93.0" text="Modifier">
+      <Button fx:id="btnUpdate" layoutX="175.0" layoutY="561.0" mnemonicParsing="false" onAction="#Update" prefHeight="38.0" prefWidth="93.0" text="Modifier">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnDelete" layoutX="309.0" layoutY="507.0" mnemonicParsing="false" onAction="#Delete" prefHeight="40.0" prefWidth="118.0" text="Supprimer">
+      <Button fx:id="btnDelete" layoutX="309.0" layoutY="561.0" mnemonicParsing="false" onAction="#Delete" prefHeight="40.0" prefWidth="118.0" text="Supprimer">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
+      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" />
+      <Button layoutX="779.0" layoutY="20.0" mnemonicParsing="false" onAction="#switchToEchange" prefHeight="46.0" prefWidth="101.0" text="Switch" />
+      <Button layoutX="497.0" layoutY="579.0" mnemonicParsing="false" onAction="#PDF" prefHeight="40.0" prefWidth="102.0" text="PDF" />
    </children>
 </AnchorPane>
