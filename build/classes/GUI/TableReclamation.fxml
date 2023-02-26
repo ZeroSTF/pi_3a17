@@ -148,7 +148,7 @@
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin></FontAwesomeIconView>
-                        <TextField fx:id="searchBox" prefHeight="32.0" prefWidth="294.0" promptText="Chercher une reclamation." style="-fx-background-color: #fcd745;">
+                        <TextField fx:id="searchBox" prefHeight="32.0" prefWidth="294.0" promptText="Chercher une reclamation..." style="-fx-background-color: #fcd745;">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -178,6 +178,14 @@
                            </font>
                            <graphic>
                               <FontAwesomeIconView fill="WHITE" glyphName="EDIT" size="20" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="btn_stat" mnemonicParsing="false" onMouseClicked="#click_stat" prefHeight="33.0" prefWidth="196.0" style="-fx-background-color: #fcd745; -fx-border-color: #FFFF;" text="Statistiques" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIconView fill="WHITE" glyphName="PIE_CHART" size="20" />
                            </graphic>
                         </Button>
                      </children>

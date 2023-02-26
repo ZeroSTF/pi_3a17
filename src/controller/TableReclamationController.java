@@ -109,6 +109,34 @@ public class TableReclamationController implements Initializable {
 
     @FXML
     private Button btn_modif_rec;
+    
+    @FXML
+    private Button btn_stat;
+    
+    @FXML
+    void click_stat(MouseEvent event) {
+        StatistiqueController statcontroller = new StatistiqueController();
+        //ajoutreccontroller.setCurrentUser(currentUser);
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Statistique.fxml"));
+
+            // set the controller instance
+            loader.setController(statcontroller);
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 
     @FXML
     void click_ajout_reclamation(MouseEvent event) {

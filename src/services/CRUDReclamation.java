@@ -12,7 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import utils.DBConnection;
 
 /**
@@ -66,6 +68,21 @@ public class CRUDReclamation implements InterfaceCRUDReclamation{
         System.out.println(reclamations);
         return reclamations;
     }
-
     
+    public Map<String, Integer> getReclamationStats() throws SQLException {
+    Map<String, Integer> statsMap = new HashMap<>();
+
+    String query = "SELECT etat, COUNT(*) AS count FROM reclamation GROUP BY etat";
+
+         Statement statement = TuniTrocDB.createStatement();
+         ResultSet resultSet = statement.executeQuery(query) ;
+        while (resultSet.next()) {
+            String etat = resultSet.getBoolean("etat") ? "Traitée" : "En cours";
+            int count = resultSet.getInt("count");
+            statsMap.put(etat, count);
+        }
+    
+
+    return statsMap;
+}   
 }
