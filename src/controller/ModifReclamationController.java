@@ -220,12 +220,7 @@ public class ModifReclamationController implements Initializable {
 //        img_user.setImage(image);
 //        img_user.setPreserveRatio(true);
         CRUDUser cruduser = new CRUDUser();
-        List<User> userList = null;
-        try {
-            userList = cruduser.afficherUsers();
-        } catch (SQLException ex) {
-            Logger.getLogger(AjoutReclamationController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
         cbx_etat.setItems(FXCollections.observableArrayList(
                 "Traitée",
                 "En cours"));

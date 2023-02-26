@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/services/CRUDFidelite.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/services/CRUDReclamation.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/services/InterfaceCRUDUser.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/controller/AjoutEventController.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/entities/User.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/services/InterfaceCRUDReclamation.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/controller/AjoutReclamationController.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/tunitroc/FxMain.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/services/CRUDUser.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/entities/Fidelite.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/controller/TableUserController.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/services/InterfaceCRUDFidelite.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/controller/TableEventController.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/controller/AjoutUserController.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/controller/ModifEventController.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/controller/TableReclamationController.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/entities/Reclamation.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/controller/ModifReclamationController.java</file>
+            <file>file:/C:/Users/Hedi/Documents/NetBeansProjects/pi_3a17/src/controller/TableFideliteController.java</file>
+        </group>
+    </open-files>
+</project-private>

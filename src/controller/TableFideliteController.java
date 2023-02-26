@@ -6,6 +6,7 @@
 package controller;
 
 import entities.Evenement;
+import entities.Fidelite;
 import entities.Reclamation;
 import entities.User;
 import java.io.ByteArrayInputStream;
@@ -40,15 +41,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import services.CRUDEvenement;
+import services.CRUDFidelite;
 import services.CRUDReclamation;
 import services.CRUDUser;
 
 /**
  * FXML Controller class
  *
- * @author ZeroS TF
+ * @author hedi 
  */
-public class TableReclamationController implements Initializable {
+public class TableFideliteController implements Initializable {
 
 //    public User currentUser;
 //
@@ -59,7 +61,7 @@ public class TableReclamationController implements Initializable {
 //    public void setCurrentUser(User currentUser) {
 //        this.currentUser = currentUser;
 //    }
-    @FXML
+   @FXML
     private Button btn_disconnect;
 
     @FXML
@@ -78,42 +80,36 @@ public class TableReclamationController implements Initializable {
     private Button btn_fidelites;
 
     @FXML
-    private TableView<Reclamation> table_reclamations;
+    private TableView<Fidelite> table_fidelites;
 
     @FXML
-    private TableColumn<Reclamation, String> id_rec;
+    private TableColumn<Fidelite, String> id_fid;
 
     @FXML
-    private TableColumn<Reclamation, String> expediteur_rec;
+    private TableColumn<Fidelite, String> valeur_fid;
 
     @FXML
-    private TableColumn<Reclamation, String> dest_rec;
+    private TableColumn<Fidelite, String> user_fid;
 
     @FXML
-    private TableColumn<Reclamation, String> cause_rec;
+    private Button btn_ajout_fid;
 
     @FXML
-    private TableColumn<Reclamation, String> etat_rec;
+    private Button btn_supp_fid;
 
     @FXML
-    private Button btn_ajout_rec;
+    private Button btn_modif_fid;
 
     @FXML
-    private Button btn_supp_rec;
-
-    @FXML
-    private Button btn_modif_rec;
-
-    @FXML
-    void click_ajout_reclamation(MouseEvent event) {
-        AjoutReclamationController ajoutreccontroller = new AjoutReclamationController();
+    void click_ajout_fidelite(MouseEvent event) {
+        AjoutFideliteController ajoutfidcontroller = new AjoutFideliteController();
         //ajoutreccontroller.setCurrentUser(currentUser);
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AjoutReclamation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/AjoutFidelite.fxml"));
 
             // set the controller instance
-            loader.setController(ajoutreccontroller);
+            loader.setController(ajoutfidcontroller);
 
             Parent root = loader.load();
 
@@ -142,50 +138,45 @@ public class TableReclamationController implements Initializable {
 
     @FXML
     void click_fids(MouseEvent event) {
-        TableFideliteController tableFideliteController = new TableFideliteController();
-        //tableFideliteController.setCurrentUser(currentUser);
+         CRUDFidelite sa = new CRUDFidelite();
 
+        List<Fidelite> fidelitesListFromDatabase = null;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableFidelite.fxml"));
-
-            // set the controller instance
-            loader.setController(tableFideliteController);
-
-            Parent root = loader.load();
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            Scene scene = new Scene(root);
-
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            fidelitesListFromDatabase = sa.afficherFidelites();
+        } catch (SQLException ex) {
+            Logger.getLogger(TableFideliteController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        ObservableList<Fidelite> fideliteList = FXCollections.observableArrayList();
+        fideliteList.addAll(fidelitesListFromDatabase);
+
+        id_fid.setCellValueFactory(new PropertyValueFactory<>("id"));
+        valeur_fid.setCellValueFactory(new PropertyValueFactory<>("valeur"));
+        user_fid.setCellValueFactory(new PropertyValueFactory<>("id_user"));
+        table_fidelites.setItems(fideliteList);
+
     }
 
     @FXML
-    void click_modifier_reclamation(MouseEvent event) {
-         Reclamation selectedRec = table_reclamations.getSelectionModel().getSelectedItem();
-        if (selectedRec == null) {
-            // Aucun utilisateur sélectionné, afficher un message d'avertissement
+    void click_modifier_fidelite(MouseEvent event) {
+         Fidelite selectedFid = table_fidelites.getSelectionModel().getSelectedItem();
+        if (selectedFid == null) {
+            // Aucun fidelité sélectionné, afficher un message d'avertissement
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Aucune reclamation sélectionné");
+            alert.setTitle("Aucune fidelité sélectionné");
             alert.setHeaderText(null);
-            alert.setContentText("Veuillez sélectionner une reclamation à modifier.");
+            alert.setContentText("Veuillez sélectionner une fidelité à modifier.");
             alert.showAndWait();
         } else {
-            ModifReclamationController modifreccontroller = new ModifReclamationController();
+            ModifFideliteController modiffidcontroller = new ModifFideliteController();
             //modifusercontroller.setCurrentUser(currentUser);
 
-            modifreccontroller.setRec_e(selectedRec);
+            modiffidcontroller.setFid_e(selectedFid);
 
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ModifReclamation.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/ModifFidelite.fxml"));
 
                 // set the controller instance
-                loader.setController(modifreccontroller);
+                loader.setController(modiffidcontroller);
 
                 Parent root = loader.load();
 
@@ -209,57 +200,57 @@ public class TableReclamationController implements Initializable {
 //        Image image = new Image(inputStream);
 //        img_user.setImage(image);
 //        img_user.setPreserveRatio(true);
-        CRUDReclamation sa = new CRUDReclamation();
+       TableReclamationController tableReclamationController = new TableReclamationController();
+        //tableReclamationController.setCurrentUser(currentUser);
 
-        List<Reclamation> reclamationsListFromDatabase = null;
         try {
-            reclamationsListFromDatabase = sa.afficherReclamations();
-        } catch (SQLException ex) {
-            Logger.getLogger(TableReclamationController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        ObservableList<Reclamation> reclamationList = FXCollections.observableArrayList();
-        reclamationList.addAll(reclamationsListFromDatabase);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableReclamation.fxml"));
 
-        id_rec.setCellValueFactory(new PropertyValueFactory<>("id"));
-        expediteur_rec.setCellValueFactory(new PropertyValueFactory<>("id_userS"));
-        dest_rec.setCellValueFactory(new PropertyValueFactory<>("id_userR"));
-        cause_rec.setCellValueFactory(new PropertyValueFactory<>("cause"));
-        etat_rec.setCellValueFactory(cellData -> {
-            Boolean isEtat = cellData.getValue().IsEtat();
-            String etatS = isEtat ? "Traitée" : "En cours";
-            return new ReadOnlyStringWrapper(etatS);
-        });
-        table_reclamations.setItems(reclamationList);
+            // set the controller instance
+            loader.setController(tableReclamationController);
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @FXML
-    void click_supprimer_reclamation(MouseEvent event) {
-        // Récupération de la reclamation sélectionnée
-        Reclamation selectedRec = table_reclamations.getSelectionModel().getSelectedItem();
-        if (selectedRec == null) {
-            // Aucun utilisateur sélectionné, afficher un message d'avertissement
+    void click_supprimer_fidelite(MouseEvent event) {
+        // Récupération de la fidelité sélectionnée
+        Fidelite selectedFid = table_fidelites.getSelectionModel().getSelectedItem();
+        if (selectedFid == null) {
+            // Aucune fidelité sélectionnée, afficher un message d'avertissement
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Aucune reclamation sélectionnée");
+            alert.setTitle("Aucune fidelité sélectionnée");
             alert.setHeaderText(null);
-            alert.setContentText("Veuillez sélectionner une reclamation à supprimer.");
+            alert.setContentText("Veuillez sélectionner une fidelité à supprimer.");
             alert.showAndWait();
         } else {
             // Afficher une boîte de dialogue de confirmation avant de supprimer la reclamation
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmation de suppression");
             alert.setHeaderText(null);
-            alert.setContentText("Êtes-vous sûr de vouloir supprimer la reclamation sélectionnée ?");
+            alert.setContentText("Êtes-vous sûr de vouloir supprimer la fidelité sélectionnée ?");
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 try {
-                    CRUDReclamation cr = new CRUDReclamation();
-                    cr.supprimerReclamation(selectedRec.getId());
-                    table_reclamations.getItems().remove(selectedRec);
-                    Alert confirmation = new Alert(Alert.AlertType.INFORMATION, "La reclamation a été supprimée avec succès.");
+                    CRUDFidelite cr = new CRUDFidelite();
+                    cr.supprimerFidelite(selectedFid.getId());
+                    table_fidelites.getItems().remove(selectedFid);
+                    Alert confirmation = new Alert(Alert.AlertType.INFORMATION, "La fidelité a été supprimée avec succès.");
                     confirmation.showAndWait();
                 } catch (SQLException e) {
-                    Alert error = new Alert(Alert.AlertType.ERROR, "Une erreur s'est produite lors de la suppression de la reclamation.");
+                    Alert error = new Alert(Alert.AlertType.ERROR, "Une erreur s'est produite lors de la suppression de la fidelité.");
                     error.showAndWait();
                     e.printStackTrace();
                 }
@@ -300,20 +291,21 @@ public class TableReclamationController implements Initializable {
 //        img_user.setImage(image);
 //        img_user.setPreserveRatio(true);
 
-        CRUDReclamation sa = new CRUDReclamation();
+        CRUDFidelite sa = new CRUDFidelite();
         CRUDUser cruduser = new CRUDUser();
 
-        List<Reclamation> reclamationsListFromDatabase = null;
+        List<Fidelite> fidelitesListFromDatabase = null;
         try {
-            reclamationsListFromDatabase = sa.afficherReclamations();
+            fidelitesListFromDatabase = sa.afficherFidelites();
         } catch (SQLException ex) {
-            Logger.getLogger(TableReclamationController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TableFideliteController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ObservableList<Reclamation> reclamationList = FXCollections.observableArrayList();
-        reclamationList.addAll(reclamationsListFromDatabase);
-        id_rec.setCellValueFactory(new PropertyValueFactory<>("id"));
-        expediteur_rec.setCellValueFactory(cellData -> {
-            int userId = cellData.getValue().getId_userS();
+        ObservableList<Fidelite> fideliteList = FXCollections.observableArrayList();
+        fideliteList.addAll(fidelitesListFromDatabase);
+        id_fid.setCellValueFactory(new PropertyValueFactory<>("id"));
+        valeur_fid.setCellValueFactory(new PropertyValueFactory<>("valeur"));
+        user_fid.setCellValueFactory(cellData -> {
+            int userId = cellData.getValue().getId_user();
             User user = new User();
             try {
                 user = cruduser.getUserById(userId);
@@ -323,23 +315,6 @@ public class TableReclamationController implements Initializable {
             String fullName = user.getId()+" "+user.getPrenom() + " " + user.getNom();
             return new SimpleStringProperty(fullName);
         });
-        dest_rec.setCellValueFactory(cellData -> {
-            int userId = cellData.getValue().getId_userR();
-            User user = new User();
-            try {
-                user = cruduser.getUserById(userId);
-            } catch (SQLException ex) {
-                Logger.getLogger(TableReclamationController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            String fullName = user.getId()+" "+user.getPrenom() + " " + user.getNom();
-            return new SimpleStringProperty(fullName);
-        });
-        cause_rec.setCellValueFactory(new PropertyValueFactory<>("cause"));
-        etat_rec.setCellValueFactory(cellData -> {
-            Boolean isEtat = cellData.getValue().IsEtat();
-            String etatS = isEtat ? "Traitée" : "En cours";
-            return new ReadOnlyStringWrapper(etatS);
-        });
-        table_reclamations.setItems(reclamationList);
+        table_fidelites.setItems(fideliteList);
     }
 }

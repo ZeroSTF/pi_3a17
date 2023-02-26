@@ -6,6 +6,7 @@
 package controller;
 
 import entities.Evenement;
+import entities.Fidelite;
 import entities.Reclamation;
 import entities.User;
 import java.io.ByteArrayInputStream;
@@ -37,6 +38,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import services.CRUDEvenement;
+import services.CRUDFidelite;
 import services.CRUDReclamation;
 import services.CRUDUser;
 
@@ -45,7 +47,17 @@ import services.CRUDUser;
  *
  * @author Hedi
  */
-public class AjoutReclamationController implements Initializable {
+public class ModifFideliteController implements Initializable {
+    public Fidelite fid_e;
+    //CONSTANT STUFF TO COPY
+
+    public Fidelite getFid_e() {
+        return fid_e;
+    }
+
+    public void setFid_e(Fidelite fid_e) {
+        this.fid_e = fid_e;
+    }
     //CONSTANT STUFF TO COPY
 
 //    public User currentUser;
@@ -56,20 +68,14 @@ public class AjoutReclamationController implements Initializable {
 //    public void setCurrentUser(User currentUser) {
 //        this.currentUser = currentUser;
 //    }
-    @FXML
-    private ComboBox<String> cbx_expediteur;
+   @FXML
+    private ComboBox<String> cbx_utilisateur;
 
     @FXML
-    private ComboBox<String> cbx_destinataire;
+    private TextField txt_valeur;
 
     @FXML
-    private TextArea txt_cause;
-
-    @FXML
-    private ComboBox<String> cbx_etat;
-
-    @FXML
-    private Button btn_ajout;
+    private Button btn_modif;
 
     @FXML
     private Button btn_disconnect1;
@@ -90,13 +96,11 @@ public class AjoutReclamationController implements Initializable {
     private Button btn_fidelites;
 
     @FXML
-    void click_ajout(MouseEvent event) throws SQLException {
-        String expediteurFullName = cbx_expediteur.getSelectionModel().getSelectedItem();
-        String destinataireFullName = cbx_destinataire.getSelectionModel().getSelectedItem();
-        String cause = txt_cause.getText();
-        String etatStr = cbx_etat.getSelectionModel().getSelectedItem();
+    void click_modif(MouseEvent event) throws SQLException {
+        String utilisateur = cbx_utilisateur.getSelectionModel().getSelectedItem();
+        String valeur = txt_valeur.getText();
 
-        if (expediteurFullName == null || destinataireFullName == null || cause.isEmpty() || etatStr == null) {
+        if (utilisateur == null || valeur == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erreur");
             alert.setHeaderText(null);
@@ -105,55 +109,29 @@ public class AjoutReclamationController implements Initializable {
             return;
         }
 
-        if (expediteurFullName.equals(destinataireFullName)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText(null);
-            alert.setContentText("L'expéditeur et le destinataire doivent être différents !");
-            alert.showAndWait();
-            return;
-        }
-
         CRUDUser cruduser = new CRUDUser();
-        int expediteurId = Integer.parseInt(expediteurFullName.split(" ")[0]);
-        int destinataireId = Integer.parseInt(destinataireFullName.split(" ")[0]);
-        User expediteur = cruduser.getUserById(expediteurId);
-        User destinataire = cruduser.getUserById(destinataireId);
+        int utilId = Integer.parseInt(utilisateur.split(" ")[0]);
+        int val = Integer.parseInt(valeur);
+        User util = cruduser.getUserById(utilId);
 
-        if (cause.toLowerCase().contains("crud") || cause.toLowerCase().contains("tabac")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText(null);
-            alert.setContentText("La cause ne doit pas contenir de gros mots !");
-            alert.showAndWait();
-            return;
-        }
-
-        boolean etat;
-        if (etatStr.equals("Traitée")) {
-            etat = true;
-        } else {
-            etat = false;
-        }
-
-        Reclamation reclamation = new Reclamation(0, expediteur.getId(), destinataire.getId(), cause, etat);
-        CRUDReclamation crudReclamation = new CRUDReclamation();
-        crudReclamation.ajouterReclamation(reclamation);
+        Fidelite fidelite = new Fidelite(0, val, utilId);
+        CRUDFidelite crudFidelite = new CRUDFidelite();
+        crudFidelite.modifierFidelite(fidelite,fid_e.getId());
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Succès");
         alert.setHeaderText(null);
-        alert.setContentText("La réclamation a été ajoutée avec succès !");
+        alert.setContentText("La fidelité a été ajoutée avec succès !");
         alert.showAndWait();
 
-        TableReclamationController tableRecController = new TableReclamationController();
+        TableFideliteController tableFidController = new TableFideliteController();
         //tableRecController.setCurrentUser(currentUser);
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableReclamation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableFidelite.fxml"));
 
             // set the controller instance
-            loader.setController(tableRecController);
+            loader.setController(tableFidController);
 
             Parent root = loader.load();
 
@@ -181,7 +159,27 @@ public class AjoutReclamationController implements Initializable {
 
     @FXML
     void click_fidelite(MouseEvent event) {
+        TableFideliteController tableFideliteController = new TableFideliteController();
+        //tableFideliteController.setCurrentUser(currentUser);
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableFidelite.fxml"));
+
+            // set the controller instance
+            loader.setController(tableFideliteController);
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     @FXML
@@ -242,20 +240,16 @@ public class AjoutReclamationController implements Initializable {
 //        img_user.setImage(image);
 //        img_user.setPreserveRatio(true);
         CRUDUser cruduser = new CRUDUser();
-        List<User> userList = null;
+        User u=null;
         try {
-            userList = cruduser.afficherUsers();
+            u = cruduser.getUserById(fid_e.getId_user());
         } catch (SQLException ex) {
-            Logger.getLogger(AjoutReclamationController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ModifReclamationController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (User user : userList) {
-            String fullName = user.getId() + " " + user.getPrenom() + " " + user.getNom();
-            cbx_expediteur.getItems().add(fullName);
-            cbx_destinataire.getItems().add(fullName);
-        }
-        cbx_etat.setItems(FXCollections.observableArrayList(
-                "Traitée",
-                "En cours"));
-
+        
+        String fullName = u.getId() + " " + u.getPrenom() + " " + u.getNom();
+        cbx_utilisateur.setValue(fullName);
+        cbx_utilisateur.setEditable(false);
+        txt_valeur.setText(Integer.toString(fid_e.getValeur()));
     }
 }

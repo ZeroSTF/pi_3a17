@@ -23,18 +23,17 @@ public class CRUDFidelite implements InterfaceCRUDFidelite{
 Connection TuniTrocDB = DBConnection.getConnection();
     @Override
     public void ajouterFidelite(Fidelite fidelite) throws SQLException {        
-        PreparedStatement stmt = TuniTrocDB.prepareStatement("INSERT INTO fidelite(id,valeur,id_user) VALUES(?, ?, ?)");
-        stmt.setInt(1, fidelite.getId());
-        stmt.setInt(2, fidelite.getValeur());
-        stmt.setInt(3, fidelite.getId_user());
+        PreparedStatement stmt = TuniTrocDB.prepareStatement("INSERT INTO fidelite(valeur,id_user) VALUES(?, ?)");
+        stmt.setInt(1, fidelite.getValeur());
+        stmt.setInt(2, fidelite.getId_user());
         stmt.executeUpdate();
     }
 
     @Override
     public void modifierFidelite(Fidelite fidelite, int id) throws SQLException {
  PreparedStatement stmt = TuniTrocDB.prepareStatement("UPDATE fidelite SET valeur=?, id_user=? WHERE id=?");
-        stmt.setInt(1, fidelite.getId_user());
-        stmt.setInt(2, fidelite.getValeur());
+        stmt.setInt(1, fidelite.getValeur());
+        stmt.setInt(2, fidelite.getId_user());
         stmt.setInt(3,id);  
         stmt.executeUpdate();    
     }
