@@ -18,7 +18,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
@@ -254,6 +256,19 @@ public class CRUDUser implements InterfaceCRUDUser {
         } catch (MessagingException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public Map<String, Integer> getUserCountByCity() throws SQLException{
+        Map<String, Integer> result = new HashMap<>();
+        String query = "SELECT ville, COUNT(*) AS count FROM user GROUP BY ville";
+        PreparedStatement stmt = TuniTrocDB.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String ville = rs.getString("ville");
+                int count = rs.getInt("count");
+                result.put(ville, count);
+        } 
+        return result;
     }
 
 }

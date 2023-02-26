@@ -164,6 +164,8 @@ public class TableUserController implements Initializable {
     private Button btn_modifier;
     @FXML
     private Button btn_supprimer;
+    @FXML
+    private Button btn_stat;
 
     @FXML
     private TextField searchBox;
@@ -330,6 +332,32 @@ public class TableUserController implements Initializable {
 
             // set the controller instance
             loader.setController(ajoutusercontroller);
+
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }
+    
+    @FXML
+    void click_stat(MouseEvent event) {
+        StatController st = new StatController();
+        st.setI(i);
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Stat.fxml"));
+
+            // set the controller instance
+            loader.setController(st);
 
             Parent root = loader.load();
 
