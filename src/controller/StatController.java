@@ -10,6 +10,7 @@ package controller;
  * @author ZeroS TF
  */
 import entities.User;
+import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +27,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -36,7 +39,7 @@ import javafx.stage.Stage;
 import services.CRUDUser;
 
 public class StatController implements Initializable {
-    
+
     public int i;
     public User currentUser;
 
@@ -73,6 +76,12 @@ public class StatController implements Initializable {
 
     @FXML
     private BarChart<String, Number> barChart;
+
+    @FXML
+    private CategoryAxis categoryAxis;
+
+    @FXML
+    private NumberAxis numberAxis;
 
     @FXML
     void click_disconnect(MouseEvent event) throws SQLException {
@@ -172,8 +181,8 @@ public class StatController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            CRUDUser cr7=new CRUDUser();
-            currentUser=cr7.getUserById(i);
+            CRUDUser cr7 = new CRUDUser();
+            currentUser = cr7.getUserById(i);
         } catch (SQLException ex) {
             Logger.getLogger(AjoutEventController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -182,8 +191,7 @@ public class StatController implements Initializable {
         Image image = new Image(inputStream);
         img_user.setImage(image);
         img_user.setPreserveRatio(true);
-        
-        
+
         CRUDUser cr = new CRUDUser();
         Map<String, Integer> userCountByCity = null;
         try {
@@ -201,6 +209,7 @@ public class StatController implements Initializable {
         }
 
         barChart.getData().add(series);
+
     }
 
 }

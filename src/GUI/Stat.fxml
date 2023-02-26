@@ -114,14 +114,20 @@
             </Button>
          </children>
       </AnchorPane>
-      <VBox layoutX="319.0" layoutY="177.0" prefHeight="522.0" prefWidth="936.0">
+      <VBox layoutX="319.0" layoutY="179.0" prefHeight="520.0" prefWidth="936.0">
          <children>
-            <BarChart fx:id="barChart" prefHeight="522.0" prefWidth="1004.0">
+            <BarChart fx:id="barChart" prefHeight="561.0" prefWidth="936.0">
               <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <CategoryAxis fx:id="categoryAxis" side="BOTTOM" tickLabelFill="WHITE">
+                     <tickLabelFont>
+                        <Font size="25.0" />
+                     </tickLabelFont></CategoryAxis>
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" />
+                <NumberAxis fx:id="numberAxis" side="LEFT" tickLabelFill="WHITE">
+                     <tickLabelFont>
+                        <Font size="25.0" />
+                     </tickLabelFont></NumberAxis>
               </yAxis>
             </BarChart>
          </children>
