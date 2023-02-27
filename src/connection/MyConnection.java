@@ -20,7 +20,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class MyConnection {
     private static final long DELAY = 15 * 24 * 60 * 60 * 1000; // 15 days in milliseconds
-String filename= null;
     Connection con = null;
 
     public static Connection connectDb() {
@@ -43,8 +42,8 @@ String filename= null;
             PreparedStatement ps = (PreparedStatement) con.prepareStatement("select * from transporteur");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list.add(new Transporteur(Integer.parseInt(rs.getString("id")), rs.getString("nom"),
-                        rs.getString("prenom"), Integer.parseInt(rs.getString("num_tel")), rs.getBlob("photo")));
+                list.add(new Transporteur(rs.getInt("id"), rs.getString("nom"),
+                        rs.getString("prenom"), rs.getInt("num_tel"), rs.getBytes("photo")));
             }
 
         } catch (Exception e) {
@@ -62,8 +61,8 @@ String filename= null;
         PreparedStatement ps = (PreparedStatement) con.prepareStatement("select id, etat, produit_s, produit_r, transporteurB, id_transporteur from echange");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                list_e.add(new Echange(Integer.parseInt(rs.getString("id")), rs.getString("etat"),
-                       Integer.parseInt(rs.getString("produit_s")),Integer.parseInt(rs.getString("produit_r")),Integer.parseInt(rs.getString("transporteurB")),Integer.parseInt(rs.getString("id_transporteur"))));
+                list_e.add(new Echange(rs.getInt("id"), rs.getString("etat"),
+                       rs.getInt("produit_s"),rs.getInt("produit_r"),rs.getInt("transporteurB"),rs.getInt("id_transporteur")));
            
         }
 
@@ -80,6 +79,7 @@ String filename= null;
 
     return list_e;
 }
+     
   
   
 
@@ -119,8 +119,33 @@ String filename= null;
             }
         }, DELAY, DELAY);
     }
-    public void filen(){
+    
+    
+    
+      public static ObservableList<Echange> getArchive() {
+    ObservableList<Echange> list_a = FXCollections.observableArrayList();
+    Connection con = connectDb();
+
+    try {
+PreparedStatement ps = con.prepareStatement("SELECT id, etat, produit_s, produit_r, transporteurB, id_transporteur FROM echange WHERE etat = ?");
+ps.setString(1, "Archivé");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list_a.add(new Echange(rs.getInt("id"), rs.getString("etat"),
+                       rs.getInt("produit_s"),rs.getInt("produit_r"),rs.getInt("transporteurB"),rs.getInt("id_transporteur")));
+           
+        }
+
+        
+
+        // close all resources
+        rs.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+
+    return list_a;
+}
     
    
     

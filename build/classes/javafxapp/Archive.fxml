@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane id="AnchorPane" prefHeight="561.0" prefWidth="779.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxapp.ArchiveController">
+   <children>
+      <Pane layoutX="-2.0" layoutY="-4.0" prefHeight="567.0" prefWidth="787.0">
+         <children>
+            <TableView fx:id="table_a" layoutX="40.0" layoutY="20.0" onMouseClicked="#getSelected" prefHeight="508.0" prefWidth="717.0">
+               <columns>
+                  <TableColumn fx:id="IdColumn" prefWidth="112.80002212524414" text="Id echange" />
+                  <TableColumn fx:id="EtatColumn" prefWidth="88.79995727539062" text="Etat" />
+                  <TableColumn fx:id="Prod_sColumn" prefWidth="88.79995727539062" text="Produit_s" />
+                  <TableColumn fx:id="Prod_rColumn" prefWidth="88.79995727539062" text="Produit_r" />
+                  <TableColumn fx:id="TransporteurBColumn" prefWidth="164.80001831054688" text="TransporteurB" />
+                  <TableColumn fx:id="TransporteurColumn" prefWidth="171.99993896484375" text="Transporteur" />
+               </columns>
+            </TableView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

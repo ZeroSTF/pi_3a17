@@ -117,7 +117,7 @@ public class FXMLController implements Initializable {
       private Stage stage;
     private Scene scene;
     private Parent root;
-private File file;
+public File file;
 private FileInputStream fis;
         ObservableList<Transporteur> ListM;
     int index =-1;
@@ -127,6 +127,7 @@ private FileInputStream fis;
      public ImageIcon Format= null;
     String s;
     byte[] photo=null;
+    ImageView imageView;
     
     
 
@@ -156,7 +157,7 @@ private FileInputStream fis;
         ps.setString(2,txtNom.getText());
         ps.setString(3,txtPrenom.getText());
        ps.setString(4,txtNum_tel.getText());
-       ps.setBinaryStream(4,(InputStream)fis);
+       
 
 
 ps.execute();
@@ -194,9 +195,9 @@ JOptionPane.showMessageDialog(null, "Transporteur a été ajouté avec succés")
         try {
        
         con=MyConnection.connectDb();
-      
+       fis = new FileInputStream(file);
             
-String sql="update transporteur set nom='"+txtNom.getText()+"',prenom='"+txtPrenom.getText()+"',num_tel='"+txtNum_tel.getText()+"',photo='"+txtPhoto.getText()+"'";
+String sql="update transporteur set nom='"+txtNom.getText()+"',prenom='"+txtPrenom.getText()+"',num_tel='"+txtNum_tel.getText()+"',photo='"+fis+"''where id = '"+txtId.getText()+"'";
             ps=con.prepareStatement(sql);
             ps.execute(); 
             JOptionPane.showMessageDialog(null,"transporteur a été modifié avec succés");        
@@ -213,7 +214,7 @@ String sql="update transporteur set nom='"+txtNom.getText()+"',prenom='"+txtPren
         NomColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, String>("nom"));
     PrenomColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, String>("prenom"));
     Num_telColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, Integer>("num_tel"));
-    PhotoColumn.setCellValueFactory(new PropertyValueFactory<Transporteur, String>("num_tel"));
+    PhotoColumn.setCellValueFactory(new PropertyValueFactory<>("photo"));
 ListM =MyConnection.getTransporteurs();
 table.setItems(ListM);    
     }   
@@ -233,7 +234,7 @@ if (file != null) {
     Image image = new Image(file.toURI().toString());
     double labelWidth = label.getWidth();
     double labelHeight = label.getHeight();
-    ImageView imageView = new ImageView(image);
+     imageView = new ImageView(image);
     imageView.setPreserveRatio(true);
     imageView.setFitWidth(labelWidth);
     imageView.setFitHeight(labelHeight);
@@ -261,11 +262,11 @@ public void getSelected(MouseEvent event){
     }
     try {
     txtId.setText(IdColumn.getCellData(index).toString());
-    txtNom.setText(NomColumn.getCellData(index).toString());
-    txtPrenom.setText(PrenomColumn.getCellData(index).toString());
+    txtNom.setText(NomColumn.getCellData(index));
+    txtPrenom.setText(PrenomColumn.getCellData(index));
    txtNum_tel.setText(Num_telColumn.getCellData(index).toString());
-    txtPhoto.setText(PhotoColumn.getCellData(index).toString()); }
-    catch (Exception e)
+ txtPhoto.setText(PhotoColumn.getCellData(index));
+    }  catch (Exception e)
             {   
         JOptionPane.showMessageDialog(null, e);
 
@@ -288,12 +289,11 @@ void PDF(ActionEvent event) {
             int id = rs.getInt("id");
             String nom = rs.getString("nom");
             String prenom = rs.getString("prenom");
-            int num = rs.getInt("email");
+            int num = rs.getInt("num_tel");
             Blob photo = rs.getBlob("photo");
-            
-
+        
             // Create a paragraph with the data and add it to the document
-            Paragraph paragraph = new Paragraph("ID: " + id + "\nNom: " + nom + "\nPrénom: " + prenom + "\nNumero de telephone: " + num + "\nPhoto:" + photo + "\n");
+            Paragraph paragraph = new Paragraph("ID: " + id + "\nNom: " + nom + "\nPrénom: " + prenom + "\nNumero de telephone: " + num + "\nPhoto:" + photo + "\n--------------------------------------------------------------------------------------------");
             document.add(paragraph);
         }
 

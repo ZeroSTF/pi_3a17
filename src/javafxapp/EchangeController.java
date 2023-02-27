@@ -99,6 +99,15 @@ public class EchangeController implements Initializable {
     PreparedStatement ps=null;
    
     
+     @FXML
+       public void Archive(ActionEvent event) throws IOException{
+    Parent root = FXMLLoader.load(getClass().getResource("Archive.fxml"));
+    stage =(Stage)((Node)event.getSource()).getScene().getWindow();
+       scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();   
+    }
+    
      public void switchToTransporteur(ActionEvent event) throws IOException{
     Parent root = FXMLLoader.load(getClass().getResource("FXML.fxml"));
     stage =(Stage)((Node)event.getSource()).getScene().getWindow();
@@ -148,7 +157,7 @@ table_e.setItems(ListE);
         con=MyConnection.connectDb();
       
             
-String sql = "UPDATE echange SET etat ='"+combo_e.getValue()+"' , id_transporteur = '"+combo_t.getValue()+"'";
+String sql = "UPDATE echange SET etat ='"+combo_e.getValue()+"' , id_transporteur = '"+combo_t.getValue()+"'where id = '"+txtId.getText()+"'";
             ps=con.prepareStatement(sql);
             ps.execute();
             JOptionPane.showMessageDialog(null,"Echange a été modifié avec succés");        
@@ -175,7 +184,6 @@ String sql = "UPDATE echange SET etat ='"+combo_e.getValue()+"' , id_transporteu
        catch   (HeadlessException | SQLException e) {
            JOptionPane.showMessageDialog(null, e);
         }
-
        }
     @FXML
 public void getSelected(MouseEvent event){
@@ -195,7 +203,37 @@ public void getSelected(MouseEvent event){
 
     }
 }
-    
+    @FXML
+void PDF(ActionEvent event) {
+    Connection con = MyConnection.connectDb();
+    try {
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("C:/Users/azizn/OneDrive/Documents/pdfs/pdfEchange.pdf"));
+        document.open();
+
+        // Retrieve data from the database
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM echange");
+
+        // Loop through the data and add it to the document
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String etat = rs.getString("etat");
+             int prd_s = rs.getInt("produit_s");
+               int prd_r = rs.getInt("produit_r");
+            int transporteur = rs.getInt("id_transporteur");
+           
+        
+            // Create a paragraph with the data and add it to the document
+            Paragraph paragraph = new Paragraph("ID: " + id + "\nEtat: " + etat + "\nExpéditeur de produit: " + prd_s + "\n\"Récepteur de produit: " + prd_r + "\nTransporteur:" + transporteur + "\n--------------------------------------------------------------------------------------------");
+            document.add(paragraph);
+        }
+
+        document.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
   
 
 }
