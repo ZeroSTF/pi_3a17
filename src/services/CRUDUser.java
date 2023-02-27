@@ -5,6 +5,7 @@
  */
 package services;
 
+import com.twilio.Twilio;
 import entities.User;
 import java.net.PasswordAuthentication;
 import java.nio.charset.Charset;
@@ -27,7 +28,8 @@ import java.util.UUID;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
+import com.twilio.type.PhoneNumber;
+import com.twilio.rest.api.v2010.account.Message;
 import utils.DBConnection;
 
 /**
@@ -249,7 +251,7 @@ public class CRUDUser implements InterfaceCRUDUser {
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
             message.setSubject(subject);
             message.setText(body);
             Transport.send(message);
@@ -258,17 +260,32 @@ public class CRUDUser implements InterfaceCRUDUser {
         }
     }
 
-    public Map<String, Integer> getUserCountByCity() throws SQLException{
+    public Map<String, Integer> getUserCountByCity() throws SQLException {
         Map<String, Integer> result = new HashMap<>();
         String query = "SELECT ville, COUNT(*) AS count FROM user GROUP BY ville";
         PreparedStatement stmt = TuniTrocDB.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                String ville = rs.getString("ville");
-                int count = rs.getInt("count");
-                result.put(ville, count);
-        } 
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            String ville = rs.getString("ville");
+            int count = rs.getInt("count");
+            result.put(ville, count);
+        }
         return result;
+    }
+
+    public void envoyerSMS(String numero, String message) {
+        // Vos identifiants Twilio
+        String ACCOUNT_SID = "ACa2599aaf0f9316cec0efc7e95b15a183";
+        String AUTH_TOKEN = "c55d24299bebdfa4faf7bf0dcd55e879";
+        // Initialisation du client Twilio
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+
+        // Envoi du SMS
+        Message m = Message.creator(
+                new PhoneNumber(numero), // Numéro de téléphone du destinataire
+                new PhoneNumber("+12766378892"), // Numéro Twilio
+                message) // Contenu du message
+                .create();
     }
 
 }

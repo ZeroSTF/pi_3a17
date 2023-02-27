@@ -94,6 +94,14 @@ public class TableUserController implements Initializable {
             Scene scene = new Scene(root);
 
             stage.setScene(scene);
+            stage.setOnCloseRequest(e -> {
+                
+                try {
+                    sa.logout(currentUser.getEmail()); // Appelle la fonction supp()
+                } catch (SQLException ex) {
+                    Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             stage.show();
 
         } catch (IOException ex) {
@@ -188,6 +196,15 @@ public class TableUserController implements Initializable {
             Scene scene = new Scene(root);
 
             stage.setScene(scene);
+            stage.setOnCloseRequest(e -> {
+                
+                try {
+                    CRUDUser cr7=new CRUDUser();
+                    cr7.logout(currentUser.getEmail()); // Appelle la fonction supp()
+                } catch (SQLException ex) {
+                    Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             stage.show();
 
         } catch (IOException ex) {
@@ -218,6 +235,21 @@ public class TableUserController implements Initializable {
                 try {
                     CRUDUser cr = new CRUDUser();
                     cr.supprimerUser(selectedUser.getEmail());
+                    String message = "Sincères salutations,"
+                            + selectedUser.getPrenom()
+                            + " "
+                            + selectedUser.getNom()
+                            + "\n"
+                            + "\n"
+                            + "Nous vous informons que votre compte a été supprimé de notre application.\n"
+                            + "\n"
+                            + "Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contacter à l'adresse e-mail suivante : tunitrocPI@gmail.com.\n"
+                            + "\n"
+                            + "Cordialement,\n"
+                            + "TuniTroc";
+                    String numero = "+216" + selectedUser.getNum_tel();
+                    System.out.println(numero);
+                    cr.envoyerSMS(numero, message);
                     table_users.getItems().remove(selectedUser);
                     Alert confirmation = new Alert(AlertType.INFORMATION, "L'utilisateur a été supprimé avec succès.");
                     confirmation.showAndWait();
@@ -260,6 +292,15 @@ public class TableUserController implements Initializable {
                 Scene scene = new Scene(root);
 
                 stage.setScene(scene);
+                stage.setOnCloseRequest(e -> {
+                
+                try {
+                    CRUDUser cr7=new CRUDUser();
+                    cr7.logout(currentUser.getEmail()); // Appelle la fonction supp()
+                } catch (SQLException ex) {
+                    Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
                 stage.show();
 
             } catch (IOException ex) {
@@ -340,6 +381,15 @@ public class TableUserController implements Initializable {
             Scene scene = new Scene(root);
 
             stage.setScene(scene);
+            stage.setOnCloseRequest(e -> {
+                
+                try {
+                    CRUDUser cr7=new CRUDUser();
+                    cr7.logout(currentUser.getEmail()); // Appelle la fonction supp()
+                } catch (SQLException ex) {
+                    Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             stage.show();
 
         } catch (IOException ex) {
@@ -347,7 +397,7 @@ public class TableUserController implements Initializable {
         }
 
     }
-    
+
     @FXML
     void click_stat(MouseEvent event) {
         StatController st = new StatController();
@@ -366,6 +416,15 @@ public class TableUserController implements Initializable {
             Scene scene = new Scene(root);
 
             stage.setScene(scene);
+            stage.setOnCloseRequest(e -> {
+                
+                try {
+                    CRUDUser cr7=new CRUDUser();
+                    cr7.logout(currentUser.getEmail()); // Appelle la fonction supp()
+                } catch (SQLException ex) {
+                    Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             stage.show();
 
         } catch (IOException ex) {
@@ -377,8 +436,8 @@ public class TableUserController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            CRUDUser cr7=new CRUDUser();
-            currentUser=cr7.getUserById(i);
+            CRUDUser cr7 = new CRUDUser();
+            currentUser = cr7.getUserById(i);
         } catch (SQLException ex) {
             Logger.getLogger(AjoutEventController.class.getName()).log(Level.SEVERE, null, ex);
         }

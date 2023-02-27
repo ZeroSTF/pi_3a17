@@ -21,6 +21,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import entities.User;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.Alert;
 import services.CRUDUser;
 
@@ -31,6 +33,16 @@ import services.CRUDUser;
  */
 public class LoginUIController implements Initializable {
 
+    public User currentUser;
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+    
     @FXML
     private Button Button_se_connecter;
     @FXML
@@ -49,62 +61,66 @@ public class LoginUIController implements Initializable {
     }
 
     @FXML
-    private void On_annuler_clicked(ActionEvent event) {
-        TF_Email_login.setText("");
-        TF_Paswword_login.setText("");
+    private void ON_seconnecter_clicked(ActionEvent event) throws SQLException {
+        Alert alert = new Alert(Alert.AlertType.NONE);
+        String email = TF_Email_login.getText();
+        String password = TF_Paswword_login.getText();
+        CRUDUser sa = new CRUDUser();
+        User user = sa.getUserByEmail(email);
+        System.out.println("logging in...");
+        if (sa.login(email, password)) {
+            if (user.isRole()) {
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setContentText("Admin connecté");
+                alert.show();
 
-    }
+                TableUserController tableUserController = new TableUserController();
+                tableUserController.setI(user.getId());
 
-    @FXML
-private void ON_seconnecter_clicked(ActionEvent event) throws SQLException {
-    Alert alert = new Alert(Alert.AlertType.NONE);
-    String email = TF_Email_login.getText();
-    String password = TF_Paswword_login.getText();
-    CRUDUser sa = new CRUDUser();
-    User user = sa.getUserByEmail(email);
-    System.out.println("logging in...");
-    if (sa.login(email, password)) {
-        if (user.isRole()) {
-            alert.setAlertType(Alert.AlertType.INFORMATION);
-            alert.setContentText("Admin connecté");
-            alert.show();
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
 
-            TableUserController tableUserController = new TableUserController();
-            tableUserController.setI(user.getId());
+                    // set the controller instance
+                    loader.setController(tableUserController);
 
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/TableUser.fxml"));
-                
-                // set the controller instance
-                loader.setController(tableUserController);
-                
-                Parent root = loader.load();
-                
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                
-                Scene scene = new Scene(root);
+                    Parent root = loader.load();
 
-                stage.setScene(scene);
-                stage.show();
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                    Scene scene = new Scene(root);
+                    
+                    stage.setScene(scene);
+                    stage.setOnCloseRequest(e -> {
                 
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
+                try {
+                    sa.logout(user.getEmail()); // Appelle la fonction supp()
+                } catch (SQLException ex) {
+                    Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+                    
+                    stage.show();
+
+                } catch (IOException ex) {
+                    System.out.println(ex.getMessage());
+                }
+
+            } else {
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setContentText("Utilisateur connecté");
+                alert.show();
+                //TODO PARTIE CLIENT DE L'APPLICATION//////////////////////
+                //////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////
+
             }
-
         } else {
-            alert.setAlertType(Alert.AlertType.INFORMATION);
-            alert.setContentText("Utilisateur connecté");
+            alert.setAlertType(Alert.AlertType.ERROR);
+            alert.setContentText("Email ou Mot de passe incorrect");
             alert.show();
-            //TODO PARTIE CLIENT DE L'APPLICATION//////////////////////
-            //////////////////////////////////////////////////////////
-            /////////////////////////////////////////////////////////
-
+            System.out.println("erreur login.");
         }
-    } else {
-        System.out.println("erreur login.");
     }
-}
-
 
     @FXML
     private void ON_inscrire_clicked(ActionEvent event) {

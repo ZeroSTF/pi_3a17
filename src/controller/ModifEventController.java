@@ -110,6 +110,15 @@ public class ModifEventController implements Initializable {
             Scene scene = new Scene(root);
 
             stage.setScene(scene);
+            stage.setOnCloseRequest(e -> {
+                
+                try {
+                    CRUDUser cr7=new CRUDUser();
+                    cr7.logout(currentUser.getEmail()); // Appelle la fonction supp()
+                } catch (SQLException ex) {
+                    Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             stage.show();
 
         } catch (IOException ex) {
@@ -231,6 +240,15 @@ public class ModifEventController implements Initializable {
                 Scene scene = new Scene(root);
 
                 stage.setScene(scene);
+                stage.setOnCloseRequest(e -> {
+                
+                try {
+                    CRUDUser cr7=new CRUDUser();
+                    cr7.logout(currentUser.getEmail()); // Appelle la fonction supp()
+                } catch (SQLException ex) {
+                    Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
                 stage.show();
 
             } catch (IOException ex) {
@@ -257,6 +275,15 @@ public class ModifEventController implements Initializable {
             Scene scene = new Scene(root);
 
             stage.setScene(scene);
+            stage.setOnCloseRequest(e -> {
+                
+                try {
+                    CRUDUser cr7=new CRUDUser();
+                    cr7.logout(currentUser.getEmail()); // Appelle la fonction supp()
+                } catch (SQLException ex) {
+                    Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             stage.show();
 
         } catch (IOException ex) {
@@ -282,6 +309,15 @@ public class ModifEventController implements Initializable {
             Scene scene = new Scene(root);
 
             stage.setScene(scene);
+            stage.setOnCloseRequest(e -> {
+                
+                try {
+                    CRUDUser cr7=new CRUDUser();
+                    cr7.logout(currentUser.getEmail()); // Appelle la fonction supp()
+                } catch (SQLException ex) {
+                    Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
             stage.show();
 
         } catch (IOException ex) {
