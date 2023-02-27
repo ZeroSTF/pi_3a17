@@ -42,7 +42,7 @@ public class LoginUIController implements Initializable {
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
-    
+
     @FXML
     private Button Button_se_connecter;
     @FXML
@@ -88,17 +88,17 @@ public class LoginUIController implements Initializable {
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
                     Scene scene = new Scene(root);
-                    
+
                     stage.setScene(scene);
                     stage.setOnCloseRequest(e -> {
-                
-                try {
-                    sa.logout(user.getEmail()); // Appelle la fonction supp()
-                } catch (SQLException ex) {
-                    Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
-                    
+
+                        try {
+                            sa.logout(user.getEmail()); // Appelle la fonction supp()
+                        } catch (SQLException ex) {
+                            Logger.getLogger(TableUserController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+
                     stage.show();
 
                 } catch (IOException ex) {
@@ -124,22 +124,26 @@ public class LoginUIController implements Initializable {
 
     @FXML
     private void ON_inscrire_clicked(ActionEvent event) {
+        InscriptionController crl = new InscriptionController();
+
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/Inscription.fxml"));
 
-            Parent page1 = FXMLLoader.load(getClass().getResource("/GUI/Inscription.fxml"));
+            // set the controller instance
+            loader.setController(crl);
 
-            Scene scene = new Scene(page1);
+            Parent root = loader.load();
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            Scene scene = new Scene(root);
 
             stage.setScene(scene);
 
             stage.show();
 
         } catch (IOException ex) {
-
             System.out.println(ex.getMessage());
-
         }
 
     }
