@@ -15,9 +15,9 @@ public class Transporteur {
     private String nom;
     private String prenom;
     private Integer num_tel;
-    private byte[]  photo;
+    private String  photo;
 
-    public Transporteur(Integer id, String nom, String prenom, Integer num_tel, byte[] photo) {
+    public Transporteur(Integer id, String nom, String prenom, Integer num_tel, String photo) {
     this.id =  id;
     this.nom = nom;
     this.prenom = prenom;
@@ -48,19 +48,19 @@ public String getNom() {
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
-     public int getNum() {
+     public int getNum_tel() {
         return num_tel;
     }
 
-    public void setNum(Integer num_tel) {
+    public void setNum_tel(Integer num_tel) {
         this.num_tel = num_tel;
     }
     
-    public byte[] getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(byte[] photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
     

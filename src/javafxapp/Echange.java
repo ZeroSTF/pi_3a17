@@ -34,10 +34,6 @@ public class Echange {
         
     }
 
-   
-   
-
-
     public Integer getId() {
         return id;
     }
@@ -54,19 +50,19 @@ public class Echange {
         this.etat = etat;
     }
 
-    public Integer getProd_r() {
+    public Integer getProduit_r() {
         return prod_r;
     }
 
-    public void setProd_r(Integer prod_r) {
+    public void setProduit_r(Integer prod_r) {
         this.prod_r = prod_r;
     }
 
-    public Integer getProd_s() {
+    public Integer getProduit_s() {
         return prod_s;
     }
 
-    public void setProd_s(Integer prod_s) {
+    public void setProduit_s(Integer prod_s) {
         this.prod_s = prod_s;
     }
 
@@ -78,19 +74,12 @@ public class Echange {
         this.transporteurB = transporteurB;
     }
 
-    public Integer getId_transporteur() {
+    public Integer getTransporteur() {
         return id_transporteur;
     }
 
-    public void setId_transporteur(Integer id_transporteur) {
+    public void setTransporteur(Integer id_transporteur) {
         this.id_transporteur = id_transporteur;
     }
-    
-    
-    
-    
-
-
-    
     
 }

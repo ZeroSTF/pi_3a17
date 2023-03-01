@@ -43,7 +43,7 @@ public class MyConnection {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(new Transporteur(rs.getInt("id"), rs.getString("nom"),
-                        rs.getString("prenom"), rs.getInt("num_tel"), rs.getBytes("photo")));
+                        rs.getString("prenom"), rs.getInt("num_tel"), rs.getString("photo")));
             }
 
         } catch (Exception e) {

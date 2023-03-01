@@ -107,6 +107,9 @@ public class FXMLController implements Initializable {
      @FXML
     private TextField txtPhoto;
      
+     @FXML
+    private TextField filterField;
+     
        @FXML
     private Label label;
      
@@ -147,16 +150,12 @@ private FileInputStream fis;
         String sql="insert into transporteur(id,nom,prenom,num_tel,photo) values(?,?,?,?,?)";
         try {
         ps=con.prepareStatement(sql);
-        if (file != null) {
-            fis = new FileInputStream(file);
-            ps.setBinaryStream(5, fis);
-        } else {
-            ps.setNull(5, java.sql.Types.BLOB);
-        }
+      
         ps.setString(1,txtId.getText());
         ps.setString(2,txtNom.getText());
         ps.setString(3,txtPrenom.getText());
        ps.setString(4,txtNum_tel.getText());
+       ps.setString(5,txtPhoto.getText());
        
 
 
@@ -195,9 +194,9 @@ JOptionPane.showMessageDialog(null, "Transporteur a été ajouté avec succés")
         try {
        
         con=MyConnection.connectDb();
-       fis = new FileInputStream(file);
+       
             
-String sql="update transporteur set nom='"+txtNom.getText()+"',prenom='"+txtPrenom.getText()+"',num_tel='"+txtNum_tel.getText()+"',photo='"+fis+"''where id = '"+txtId.getText()+"'";
+String sql="update transporteur set nom='"+txtNom.getText()+"',prenom='"+txtPrenom.getText()+"',num_tel='"+txtNum_tel.getText()+"',photo='"+txtPhoto.getText()+"'where id ='"+txtId.getText()+"'";
             ps=con.prepareStatement(sql);
             ps.execute(); 
             JOptionPane.showMessageDialog(null,"transporteur a été modifié avec succés");        
@@ -239,7 +238,7 @@ if (file != null) {
     imageView.setFitWidth(labelWidth);
     imageView.setFitHeight(labelHeight);
     label.setGraphic(imageView);
-    txtPhoto.setText(file.getName());
+    txtPhoto.setText(file.getPath());
 }
 }
 
